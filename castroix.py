@@ -2,8 +2,24 @@
 """
 Castroix - A lightweight media streaming launcher for Linux desktop
 """
-import tkinter as tk
-from tkinter import ttk, messagebox
+import sys
+
+# Check if tkinter is available
+try:
+    import tkinter as tk
+    from tkinter import ttk, messagebox
+except ModuleNotFoundError:
+    print("Error: tkinter is not installed.")
+    print("\nCastroix requires tkinter to run. Please install it using one of the following commands:\n")
+    print("Ubuntu/Debian:")
+    print("  sudo apt-get install python3-tk\n")
+    print("Fedora:")
+    print("  sudo dnf install python3-tkinter\n")
+    print("Arch Linux:")
+    print("  sudo pacman -S tk\n")
+    print("For other distributions, please refer to your package manager documentation.")
+    sys.exit(1)
+
 import webbrowser
 import subprocess
 import json

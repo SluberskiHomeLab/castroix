@@ -146,6 +146,47 @@ class TestColorUtils(unittest.TestCase):
                     self.fail(f"{service_key} color is not valid hex")
 
 
+class TestErrorHandling(unittest.TestCase):
+    """Test error handling"""
+    
+    def test_tkinter_error_message(self):
+        """Test that helpful error message is shown when tkinter is missing"""
+        import subprocess
+        import sys
+        
+        # Create a test script that simulates missing tkinter
+        test_script = '''
+import sys
+# Block tkinter import
+sys.modules['tkinter'] = None
+
+# Now try to import castroix - should show error message
+try:
+    import castroix
+except SystemExit as e:
+    # Expected - the module should exit with code 1
+    sys.exit(e.code)
+'''
+        
+        # Run the test script
+        result = subprocess.run(
+            [sys.executable, '-c', test_script],
+            cwd=Path(__file__).parent,
+            capture_output=True,
+            text=True
+        )
+        
+        # Should exit with code 1
+        self.assertEqual(result.returncode, 1, 
+            "Script should exit with code 1 when tkinter is missing")
+        
+        # Should contain helpful error message
+        self.assertIn("tkinter is not installed", result.stdout.lower(),
+            "Error message should mention tkinter is not installed")
+        self.assertIn("apt-get", result.stdout.lower(),
+            "Error message should include installation instructions")
+
+
 def run_tests():
     """Run all tests"""
     # Create a test suite
@@ -156,6 +197,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestMediaService))
     suite.addTests(loader.loadTestsFromTestCase(TestConfiguration))
     suite.addTests(loader.loadTestsFromTestCase(TestColorUtils))
+    suite.addTests(loader.loadTestsFromTestCase(TestErrorHandling))
     
     # Run tests
     runner = unittest.TextTestRunner(verbosity=2)
