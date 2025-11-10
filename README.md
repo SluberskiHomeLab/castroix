@@ -49,7 +49,12 @@ git clone https://github.com/SluberskiHomeLab/castroix.git
 cd castroix
 ```
 
-2. Make the script executable (optional):
+2. Copy the Sample Config:
+```bash
+cp comfig.json.sample config.json
+```
+  
+3. Make the script executable (optional):
 ```bash
 chmod +x castroix.py
 ```
