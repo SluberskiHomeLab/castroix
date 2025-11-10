@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Castroix
+Comment=Media Hub for Multi-Media Consumption
+Exec=/usr/bin/python3 /path/to/castroix/castroix.py
+Icon=video-display
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;Player;
+StartupNotify=true
