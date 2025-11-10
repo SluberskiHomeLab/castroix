@@ -8,6 +8,7 @@ import webbrowser
 import subprocess
 import json
 import os
+import signal
 from pathlib import Path
 
 
@@ -19,21 +20,49 @@ class MediaService:
         self.command = command
         self.icon_color = icon_color
     
-    def launch(self):
+    def launch(self, launch_callback=None):
         """Launch the media service"""
         try:
+            process = None
             if self.command:
                 # Try to launch as a command (for installed apps)
-                subprocess.Popen(self.command, shell=True)
+                process = subprocess.Popen(self.command, shell=True)
             elif self.url:
-                # Open URL in default browser
-                webbrowser.open(self.url)
+                # Open URL in default browser with fullscreen flags
+                # Try common browsers with fullscreen options
+                browsers = [
+                    ('firefox', f'firefox --kiosk {self.url}'),
+                    ('chromium', f'chromium --start-fullscreen --app={self.url}'),
+                    ('google-chrome', f'google-chrome --start-fullscreen --app={self.url}'),
+                    ('brave', f'brave --start-fullscreen --app={self.url}')
+                ]
+                
+                launched = False
+                for browser_name, browser_cmd in browsers:
+                    # Check if browser is available
+                    if subprocess.run(['which', browser_name], 
+                                    capture_output=True).returncode == 0:
+                        process = subprocess.Popen(browser_cmd, shell=True)
+                        launched = True
+                        break
+                
+                if not launched:
+                    # Fallback to default browser (won't be fullscreen)
+                    webbrowser.open(self.url)
             else:
                 messagebox.showwarning("Not Configured", 
                     f"{self.name} is not configured. Please check config.json")
+                return None
+            
+            # Call callback with process info
+            if launch_callback and process:
+                launch_callback(self.name, process)
+            
+            return process
         except Exception as e:
             messagebox.showerror("Launch Error", 
                 f"Failed to launch {self.name}: {str(e)}")
+            return None
 
 
 class CastroixApp:
@@ -45,12 +74,18 @@ class CastroixApp:
         self.root.geometry("800x600")
         self.root.configure(bg="#1a1a1a")
         
+        # Track launched processes
+        self.launched_processes = []
+        
         # Load configuration
         self.config = self.load_config()
         self.services = self.create_services()
         
         # Setup UI
         self.setup_ui()
+        
+        # Setup keybindings
+        self.setup_keybindings()
     
     def load_config(self):
         """Load configuration from config.json"""
@@ -148,10 +183,11 @@ class CastroixApp:
             col = idx % 2
             self.create_service_button(services_frame, service, row, col)
         
-        # Footer
+        # Footer with keybind info
+        footer_text = "Click on a service to launch | Press Ctrl+Q to close the last opened app/webpage"
         footer_label = tk.Label(
             self.root,
-            text="Click on a service to launch",
+            text=footer_text,
             font=("Arial", 10),
             bg="#1a1a1a",
             fg="#666666"
@@ -175,7 +211,7 @@ class CastroixApp:
             activeforeground="#ffffff",
             relief="flat",
             cursor="hand2",
-            command=service.launch
+            command=lambda: self.launch_service(service)
         )
         button.pack(expand=True, fill="both", ipadx=40, ipady=40)
         
@@ -184,6 +220,52 @@ class CastroixApp:
             bg=self.lighten_color(service.icon_color)))
         button.bind("<Leave>", lambda e: button.config(
             bg=service.icon_color))
+    
+    def launch_service(self, service):
+        """Launch a service and track its process"""
+        process = service.launch(self.on_service_launched)
+    
+    def on_service_launched(self, name, process):
+        """Callback when a service is launched"""
+        self.launched_processes.append({
+            'name': name,
+            'process': process
+        })
+    
+    def close_last_app(self):
+        """Close the most recently launched app"""
+        if not self.launched_processes:
+            messagebox.showinfo("No Apps", "No apps are currently running from Castroix")
+            return
+        
+        # Get the last launched process
+        last_app = self.launched_processes.pop()
+        
+        try:
+            # Try to terminate the process gracefully
+            process = last_app['process']
+            if process.poll() is None:  # Process is still running
+                process.terminate()
+                # Give it a moment to close gracefully
+                try:
+                    process.wait(timeout=2)
+                except subprocess.TimeoutExpired:
+                    # Force kill if it doesn't close
+                    process.kill()
+                messagebox.showinfo("App Closed", 
+                    f"Closed {last_app['name']}")
+            else:
+                messagebox.showinfo("Already Closed", 
+                    f"{last_app['name']} has already closed")
+        except Exception as e:
+            messagebox.showerror("Error", 
+                f"Failed to close {last_app['name']}: {str(e)}")
+    
+    def setup_keybindings(self):
+        """Setup keyboard shortcuts"""
+        # Ctrl+Q to close last opened app
+        self.root.bind('<Control-q>', lambda e: self.close_last_app())
+        self.root.bind('<Control-Q>', lambda e: self.close_last_app())
     
     def lighten_color(self, hex_color):
         """Lighten a hex color for hover effect"""
