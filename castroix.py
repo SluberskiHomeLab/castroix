@@ -14,11 +14,12 @@ from pathlib import Path
 
 class MediaService:
     """Represents a media streaming service"""
-    def __init__(self, name, url=None, command=None, icon_color="#4a90e2"):
+    def __init__(self, name, url=None, command=None, icon_color="#4a90e2", icon="🎬"):
         self.name = name
         self.url = url
         self.command = command
         self.icon_color = icon_color
+        self.icon = icon
     
     def launch(self, launch_callback=None):
         """Launch the media service"""
@@ -98,25 +99,29 @@ class CastroixApp:
                     "name": "Plex",
                     "url": "https://app.plex.tv",
                     "command": None,
-                    "icon_color": "#e5a00d"
+                    "icon_color": "#e5a00d",
+                    "icon": "📺"
                 },
                 "jellyfin": {
                     "name": "Jellyfin",
                     "url": "https://jellyfin.org/downloads/",
                     "command": None,
-                    "icon_color": "#00a4dc"
+                    "icon_color": "#00a4dc",
+                    "icon": "🎞️"
                 },
                 "netflix": {
                     "name": "Netflix",
                     "url": "https://www.netflix.com",
                     "command": None,
-                    "icon_color": "#e50914"
+                    "icon_color": "#e50914",
+                    "icon": "🎬"
                 },
                 "disneyplus": {
                     "name": "Disney+",
                     "url": "https://www.disneyplus.com",
                     "command": None,
-                    "icon_color": "#113ccf"
+                    "icon_color": "#113ccf",
+                    "icon": "✨"
                 }
             }
         }
@@ -142,7 +147,8 @@ class CastroixApp:
                 name=service_config.get("name", key),
                 url=service_config.get("url"),
                 command=service_config.get("command"),
-                icon_color=service_config.get("icon_color", "#4a90e2")
+                icon_color=service_config.get("icon_color", "#4a90e2"),
+                icon=service_config.get("icon", "🎬")
             )
             services.append(service)
         return services
@@ -200,10 +206,13 @@ class CastroixApp:
         button_frame = tk.Frame(parent, bg="#1a1a1a")
         button_frame.grid(row=row, column=col, padx=20, pady=20, sticky="nsew")
         
+        # Button text with icon and name
+        button_text = f"{service.icon}\n{service.name}"
+        
         # Service button
         button = tk.Button(
             button_frame,
-            text=service.name,
+            text=button_text,
             font=("Arial", 18, "bold"),
             bg=service.icon_color,
             fg="#ffffff",

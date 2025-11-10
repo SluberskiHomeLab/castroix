@@ -85,13 +85,15 @@ You can customize the configuration by editing `config.json`:
       "name": "Plex",
       "url": "https://app.plex.tv",
       "command": null,
-      "icon_color": "#e5a00d"
+      "icon_color": "#e5a00d",
+      "icon": "📺"
     },
     "jellyfin": {
       "name": "Jellyfin",
       "url": "http://localhost:8096",
       "command": null,
-      "icon_color": "#00a4dc"
+      "icon_color": "#00a4dc",
+      "icon": "🎞️"
     }
   }
 }
@@ -102,6 +104,7 @@ You can customize the configuration by editing `config.json`:
 - `url`: Web URL to open (opened in default browser)
 - `command`: Shell command to execute (for native apps) - takes precedence over URL
 - `icon_color`: Hex color code for the service tile
+- `icon`: Emoji or Unicode character to display as an icon (optional, defaults to 🎬)
 
 **Examples:**
 
@@ -111,7 +114,8 @@ For a local Jellyfin server:
   "name": "Jellyfin",
   "url": "http://192.168.1.100:8096",
   "command": null,
-  "icon_color": "#00a4dc"
+  "icon_color": "#00a4dc",
+  "icon": "🎞️"
 }
 ```
 
@@ -121,7 +125,8 @@ For a native Plex app:
   "name": "Plex",
   "url": null,
   "command": "flatpak run tv.plex.PlexDesktop",
-  "icon_color": "#e5a00d"
+  "icon_color": "#e5a00d",
+  "icon": "📺"
 }
 ```
 
@@ -176,7 +181,8 @@ To add a new streaming service, edit `config.json` and add a new entry under `se
   "name": "Hulu",
   "url": "https://www.hulu.com",
   "command": null,
-  "icon_color": "#1ce783"
+  "icon_color": "#1ce783",
+  "icon": "📱"
 }
 ```
 
