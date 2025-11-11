@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Castroix - A lightweight media streaming launcher for Linux desktop
+Castroix - A lightweight media streaming launcher for Windows, Linux, and MacOS
 """
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -9,6 +9,8 @@ import subprocess
 import json
 import os
 import signal
+import platform
+import shutil
 from pathlib import Path
 from PIL import Image, ImageTk
 
@@ -31,20 +33,17 @@ class MediaService:
                 process = subprocess.Popen(self.command, shell=True)
             elif self.url:
                 # Open URL in default browser with fullscreen flags
-                # Try common browsers with fullscreen options
-                browsers = [
-                    ('firefox', f'firefox --kiosk {self.url}'),
-                    ('chromium', f'chromium --start-fullscreen --app={self.url}'),
-                    ('google-chrome', f'google-chrome --start-fullscreen --app={self.url}'),
-                    ('brave', f'brave --start-fullscreen --app={self.url}')
-                ]
+                # Get platform-specific browser configurations
+                system = platform.system()
+                browsers = self._get_browsers_for_platform(system)
                 
                 launched = False
                 for browser_name, browser_cmd in browsers:
-                    # Check if browser is available
-                    if subprocess.run(['which', browser_name], 
-                                    capture_output=True).returncode == 0:
-                        process = subprocess.Popen(browser_cmd, shell=True)
+                    # Check if browser is available using cross-platform shutil.which
+                    if shutil.which(browser_name):
+                        # Format the command with the URL
+                        cmd = browser_cmd.format(url=self.url)
+                        process = subprocess.Popen(cmd, shell=True)
                         launched = True
                         break
                 
@@ -65,6 +64,33 @@ class MediaService:
             messagebox.showerror("Launch Error", 
                 f"Failed to launch {self.name}: {str(e)}")
             return None
+    
+    def _get_browsers_for_platform(self, system):
+        """Get platform-specific browser configurations"""
+        if system == "Windows":
+            # Windows browser configurations
+            return [
+                ('firefox', 'firefox -kiosk {url}'),
+                ('chrome', 'chrome --start-fullscreen --app={url}'),
+                ('msedge', 'msedge --start-fullscreen --app={url}'),
+                ('brave', 'brave --start-fullscreen --app={url}')
+            ]
+        elif system == "Darwin":  # MacOS
+            # MacOS browser configurations
+            return [
+                ('firefox', '/Applications/Firefox.app/Contents/MacOS/firefox -kiosk {url}'),
+                ('Google Chrome', '/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --start-fullscreen --app={url}'),
+                ('Brave Browser', '/Applications/Brave\\ Browser.app/Contents/MacOS/Brave\\ Browser --start-fullscreen --app={url}'),
+                ('Safari', 'open -a Safari {url}')  # Safari doesn't support kiosk mode via command line
+            ]
+        else:  # Linux and other Unix-like systems
+            # Linux browser configurations
+            return [
+                ('firefox', 'firefox --kiosk {url}'),
+                ('chromium', 'chromium --start-fullscreen --app={url}'),
+                ('google-chrome', 'google-chrome --start-fullscreen --app={url}'),
+                ('brave', 'brave --start-fullscreen --app={url}')
+            ]
 
 
 class CastroixApp:

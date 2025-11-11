@@ -196,6 +196,61 @@ class TestFullscreenFeatures(unittest.TestCase):
         self.assertIsNotNone(launched_processes[0]['process'])
 
 
+class TestCrossPlatform(unittest.TestCase):
+    """Test cross-platform functionality"""
+    
+    def test_platform_browser_configurations(self):
+        """Test that browser configurations exist for all platforms"""
+        import platform as plat
+        
+        service = MediaService(
+            name="Test Service",
+            url="https://example.com",
+            icon_color="#ff0000"
+        )
+        
+        # Test that the method exists
+        self.assertTrue(hasattr(service, '_get_browsers_for_platform'))
+        
+        # Test each platform
+        for system in ['Windows', 'Darwin', 'Linux']:
+            browsers = service._get_browsers_for_platform(system)
+            self.assertIsInstance(browsers, list)
+            self.assertGreater(len(browsers), 0, 
+                f"Should have browsers configured for {system}")
+            
+            # Each browser entry should be a tuple of (name, command)
+            for browser_entry in browsers:
+                self.assertIsInstance(browser_entry, tuple)
+                self.assertEqual(len(browser_entry), 2)
+                self.assertIsInstance(browser_entry[0], str)
+                self.assertIsInstance(browser_entry[1], str)
+                # Command should have {url} placeholder
+                self.assertIn('{url}', browser_entry[1])
+    
+    def test_shutil_which_usage(self):
+        """Test that shutil.which is available for cross-platform browser detection"""
+        import shutil
+        
+        # Verify shutil.which exists and works
+        self.assertTrue(hasattr(shutil, 'which'))
+        self.assertTrue(callable(shutil.which))
+        
+        # Test that it works with python (should always exist in test environment)
+        python_path = shutil.which('python') or shutil.which('python3')
+        self.assertIsNotNone(python_path, 
+            "shutil.which should find python/python3")
+    
+    def test_platform_module_import(self):
+        """Test that platform module is imported and available"""
+        import platform as plat
+        
+        # Verify we can detect the current platform
+        current_system = plat.system()
+        self.assertIn(current_system, ['Windows', 'Linux', 'Darwin', 'Java'],
+            "Should detect a valid platform")
+
+
 def run_tests():
     """Run all tests"""
     # Create a test suite
@@ -207,6 +262,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestConfiguration))
     suite.addTests(loader.loadTestsFromTestCase(TestColorUtils))
     suite.addTests(loader.loadTestsFromTestCase(TestFullscreenFeatures))
+    suite.addTests(loader.loadTestsFromTestCase(TestCrossPlatform))
     
     # Run tests
     runner = unittest.TextTestRunner(verbosity=2)
