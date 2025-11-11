@@ -2,7 +2,7 @@
 
 Media Hub for Multi-Media Consumption
 
-A lightweight Linux desktop application for launching and accessing popular media streaming services including Plex, Jellyfin, Netflix, and Disney+.
+A lightweight cross-platform desktop application for launching and accessing popular media streaming services including Plex, Jellyfin, Netflix, and Disney+. Works on Windows, Linux, and MacOS.
 
 ## Features
 
@@ -25,6 +25,18 @@ A lightweight Linux desktop application for launching and accessing popular medi
 - Tkinter (usually included with Python)
 - Pillow (PIL) library for image handling
 
+### Platform-Specific Setup
+
+#### Windows
+Tkinter is typically included with Python installations from python.org. If needed, ensure you select "tcl/tk and IDLE" during Python installation.
+
+#### MacOS
+Tkinter is included with Python installations. If using Homebrew Python:
+```bash
+brew install python-tk
+```
+
+#### Linux
 On most Linux distributions, Tkinter is included by default. If needed, install it:
 
 **Ubuntu/Debian:**
@@ -56,11 +68,18 @@ pip install -r requirements.txt
 ```
 
 3. Copy the Sample Config:
+
+**Windows (PowerShell):**
+```powershell
+Copy-Item config.json.sample config.json
+```
+
+**Linux/MacOS:**
 ```bash
 cp config.json.sample config.json
 ```
   
-4. Make the script executable (optional):
+4. Make the script executable (Linux/MacOS only):
 ```bash
 chmod +x castroix.py
 ```
@@ -69,11 +88,17 @@ chmod +x castroix.py
 
 ### Running the Application
 
+**Windows:**
+```cmd
+python castroix.py
+```
+
+**Linux/MacOS:**
 ```bash
 python3 castroix.py
 ```
 
-Or if you made it executable:
+Or if you made it executable (Linux/MacOS):
 ```bash
 ./castroix.py
 ```
@@ -138,6 +163,13 @@ For a native Plex app:
 
 ### Creating a Desktop Launcher
 
+#### Windows
+Create a shortcut:
+1. Right-click on `castroix.py` and select "Create shortcut"
+2. Move the shortcut to your Desktop or Start Menu folder
+3. Optionally, right-click the shortcut, go to Properties, and set a custom icon
+
+#### Linux
 To add Castroix to your application menu, create a `.desktop` file:
 
 1. Create the file:
@@ -161,6 +193,14 @@ Categories=AudioVideo;Video;Player;
 ```bash
 chmod +x ~/.local/share/applications/castroix.desktop
 ```
+
+#### MacOS
+Create an app bundle or use Automator:
+1. Open Automator
+2. Create a new "Application"
+3. Add "Run Shell Script" action
+4. Enter: `/usr/bin/python3 /path/to/castroix/castroix.py`
+5. Save the application to your Applications folder
 
 ## Screenshots
 
