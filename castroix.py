@@ -10,15 +10,17 @@ import json
 import os
 import signal
 from pathlib import Path
+from PIL import Image, ImageTk
 
 
 class MediaService:
     """Represents a media streaming service"""
-    def __init__(self, name, url=None, command=None, icon_color="#4a90e2"):
+    def __init__(self, name, url=None, command=None, icon_color="#4a90e2", icon_file=None):
         self.name = name
         self.url = url
         self.command = command
         self.icon_color = icon_color
+        self.icon_file = icon_file
     
     def launch(self, launch_callback=None):
         """Launch the media service"""
@@ -98,25 +100,29 @@ class CastroixApp:
                     "name": "Plex",
                     "url": "https://app.plex.tv",
                     "command": None,
-                    "icon_color": "#e5a00d"
+                    "icon_color": "#e5a00d",
+                    "icon_file": "plex.png"
                 },
                 "jellyfin": {
                     "name": "Jellyfin",
                     "url": "https://jellyfin.org/downloads/",
                     "command": None,
-                    "icon_color": "#00a4dc"
+                    "icon_color": "#00a4dc",
+                    "icon_file": "jellyfin.png"
                 },
                 "netflix": {
                     "name": "Netflix",
                     "url": "https://www.netflix.com",
                     "command": None,
-                    "icon_color": "#e50914"
+                    "icon_color": "#e50914",
+                    "icon_file": "netflix.png"
                 },
                 "disneyplus": {
                     "name": "Disney+",
                     "url": "https://www.disneyplus.com",
                     "command": None,
-                    "icon_color": "#113ccf"
+                    "icon_color": "#113ccf",
+                    "icon_file": "disney+.png"
                 }
             }
         }
@@ -142,7 +148,8 @@ class CastroixApp:
                 name=service_config.get("name", key),
                 url=service_config.get("url"),
                 command=service_config.get("command"),
-                icon_color=service_config.get("icon_color", "#4a90e2")
+                icon_color=service_config.get("icon_color", "#4a90e2"),
+                icon_file=service_config.get("icon_file", None)
             )
             services.append(service)
         return services
@@ -196,24 +203,50 @@ class CastroixApp:
     
     def create_service_button(self, parent, service, row, col):
         """Create a button for a media service"""
-        # Button frame with padding
-        button_frame = tk.Frame(parent, bg="#1a1a1a")
-        button_frame.grid(row=row, column=col, padx=20, pady=20, sticky="nsew")
+        # Container frame for button and label
+        container_frame = tk.Frame(parent, bg="#1a1a1a")
+        container_frame.grid(row=row, column=col, padx=20, pady=20, sticky="nsew")
         
-        # Service button
+        # Load the icon image
+        icon_image = None
+        if service.icon_file:
+            icon_path = Path(__file__).parent / service.icon_file
+            if icon_path.exists():
+                try:
+                    img = Image.open(icon_path)
+                    img = img.resize((80, 80), Image.Resampling.LANCZOS)
+                    icon_image = ImageTk.PhotoImage(img)
+                except Exception as e:
+                    print(f"Error loading icon {service.icon_file}: {e}")
+        
+        # Service button with icon
         button = tk.Button(
-            button_frame,
-            text=service.name,
-            font=("Arial", 18, "bold"),
+            container_frame,
+            image=icon_image if icon_image else None,
             bg=service.icon_color,
             fg="#ffffff",
             activebackground=self.lighten_color(service.icon_color),
             activeforeground="#ffffff",
             relief="flat",
             cursor="hand2",
-            command=lambda: self.launch_service(service)
+            command=lambda: self.launch_service(service),
+            width=120,
+            height=120
         )
-        button.pack(expand=True, fill="both", ipadx=40, ipady=40)
+        button.pack(pady=(0, 10))
+        
+        # Keep a reference to prevent garbage collection
+        button.image = icon_image
+        
+        # Service name label below the button
+        label = tk.Label(
+            container_frame,
+            text=service.name,
+            font=("Arial", 14, "bold"),
+            bg="#1a1a1a",
+            fg="#ffffff"
+        )
+        label.pack()
         
         # Hover effects
         button.bind("<Enter>", lambda e: button.config(
