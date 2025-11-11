@@ -5,28 +5,28 @@
       "url": "https://app.plex.tv",
       "command": null,
       "icon_color": "#e5a00d",
-      "icon": "📺"
+      "icon_file": "plex.png"
     },
     "jellyfin": {
       "name": "Jellyfin",
       "url": "https://jellyfin.org/downloads/",
       "command": null,
       "icon_color": "#00a4dc",
-      "icon": "🎞️"
+      "icon_file": "jellyfin.png"
     },
     "netflix": {
       "name": "Netflix",
       "url": "https://www.netflix.com",
       "command": null,
       "icon_color": "#e50914",
-      "icon": "🎬"
+      "icon_file": "netflix.png"
     },
     "disneyplus": {
       "name": "Disney+",
       "url": "https://www.disneyplus.com",
       "command": null,
       "icon_color": "#113ccf",
-      "icon": "✨"
+      "icon_file": "disney+.png"
     }
   }
 }

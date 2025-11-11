@@ -53,8 +53,6 @@ class TestMediaService(unittest.TestCase):
         self.assertEqual(service.url, "https://example.com")
         self.assertEqual(service.icon_color, "#ff0000")
         self.assertIsNone(service.command)
-        # Check that icon has a default value
-        self.assertIsNotNone(service.icon)
     
     def test_media_service_with_command(self):
         """Test creating a MediaService with command"""
@@ -67,15 +65,15 @@ class TestMediaService(unittest.TestCase):
         self.assertEqual(service.command, "test-app")
         self.assertIsNone(service.url)
     
-    def test_media_service_with_icon(self):
-        """Test creating a MediaService with custom icon"""
+    def test_media_service_with_icon_file(self):
+        """Test creating a MediaService with custom icon file"""
         service = MediaService(
             name="Test Service",
             url="https://example.com",
             icon_color="#ff0000",
-            icon="🎮"
+            icon_file="test.png"
         )
-        self.assertEqual(service.icon, "🎮")
+        self.assertEqual(service.icon_file, "test.png")
 
 
 class TestConfiguration(unittest.TestCase):
@@ -126,8 +124,8 @@ class TestConfiguration(unittest.TestCase):
                 f"{service_key} should have 'name' field")
             self.assertIn("icon_color", service_config,
                 f"{service_key} should have 'icon_color' field")
-            self.assertIn("icon", service_config,
-                f"{service_key} should have 'icon' field")
+            self.assertIn("icon_file", service_config,
+                f"{service_key} should have 'icon_file' field")
             # Should have either url or command
             self.assertTrue(
                 "url" in service_config or "command" in service_config,

@@ -23,6 +23,7 @@ A lightweight Linux desktop application for launching and accessing popular medi
 
 - Python 3.6 or higher
 - Tkinter (usually included with Python)
+- Pillow (PIL) library for image handling
 
 On most Linux distributions, Tkinter is included by default. If needed, install it:
 
@@ -49,12 +50,17 @@ git clone https://github.com/SluberskiHomeLab/castroix.git
 cd castroix
 ```
 
-2. Copy the Sample Config:
+2. Install dependencies:
 ```bash
-cp comfig.json.sample config.json
+pip install -r requirements.txt
+```
+
+3. Copy the Sample Config:
+```bash
+cp config.json.sample config.json
 ```
   
-3. Make the script executable (optional):
+4. Make the script executable (optional):
 ```bash
 chmod +x castroix.py
 ```
@@ -86,25 +92,25 @@ You can customize the configuration by editing `config.json`:
       "url": "https://app.plex.tv",
       "command": null,
       "icon_color": "#e5a00d",
-      "icon": "📺"
+      "icon_file": "plex.png"
     },
     "jellyfin": {
       "name": "Jellyfin",
       "url": "http://localhost:8096",
       "command": null,
       "icon_color": "#00a4dc",
-      "icon": "🎞️"
+      "icon_file": "jellyfin.png"
     }
   }
 }
 ```
 
 **Configuration Options:**
-- `name`: Display name for the service
+- `name`: Display name for the service (shown below the button)
 - `url`: Web URL to open (opened in default browser)
 - `command`: Shell command to execute (for native apps) - takes precedence over URL
-- `icon_color`: Hex color code for the service tile
-- `icon`: Emoji or Unicode character to display as an icon (optional, defaults to 🎬)
+- `icon_color`: Hex color code for the button background
+- `icon_file`: Path to PNG icon file (placed in project root, e.g., "plex.png")
 
 **Examples:**
 
@@ -115,7 +121,7 @@ For a local Jellyfin server:
   "url": "http://192.168.1.100:8096",
   "command": null,
   "icon_color": "#00a4dc",
-  "icon": "🎞️"
+  "icon_file": "jellyfin.png"
 }
 ```
 
@@ -126,7 +132,7 @@ For a native Plex app:
   "url": null,
   "command": "flatpak run tv.plex.PlexDesktop",
   "icon_color": "#e5a00d",
-  "icon": "📺"
+  "icon_file": "plex.png"
 }
 ```
 
@@ -168,13 +174,20 @@ The application features a clean, dark-themed interface with color-coded tiles f
 castroix/
 ├── castroix.py        # Main application file
 ├── config.json        # Configuration file
-├── requirements.txt   # Python dependencies (none required)
+├── requirements.txt   # Python dependencies
+├── plex.png          # Service icon files
+├── jellyfin.png
+├── netflix.png
+├── disney+.png
 └── README.md         # This file
 ```
 
 ### Adding New Services
 
-To add a new streaming service, edit `config.json` and add a new entry under `services`:
+To add a new streaming service:
+
+1. Create a PNG icon file (128x128 recommended) and place it in the project root (e.g., `hulu.png`)
+2. Edit `config.json` and add a new entry under `services`:
 
 ```json
 "hulu": {
@@ -182,7 +195,7 @@ To add a new streaming service, edit `config.json` and add a new entry under `se
   "url": "https://www.hulu.com",
   "command": null,
   "icon_color": "#1ce783",
-  "icon": "📱"
+  "icon_file": "hulu.png"
 }
 ```
 
