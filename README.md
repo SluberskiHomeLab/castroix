@@ -152,7 +152,7 @@ For a local Jellyfin server:
 }
 ```
 
-For a native Plex app:
+For a native Plex app (Linux):
 ```json
 "plex": {
   "name": "Plex",
@@ -162,6 +162,74 @@ For a native Plex app:
   "icon_file": "plex.png"
 }
 ```
+
+For Windows Store apps (Netflix):
+```json
+"netflix": {
+  "name": "Netflix",
+  "url": null,
+  "command": "start shell:AppsFolder\\4DF9E0F8.Netflix_mcm4njqhnhss8!Netflix.App",
+  "icon_color": "#e50914",
+  "icon_file": "netflix.png"
+}
+```
+
+For Windows Store apps (Disney+):
+```json
+"disneyplus": {
+  "name": "Disney+",
+  "url": null,
+  "command": "start shell:AppsFolder\\Disney.37853FC22B2CE_6rarf9sa4v8jt!App",
+  "icon_color": "#113ccf",
+  "icon_file": "disney+.png"
+}
+```
+
+For Windows Store apps (Plex):
+```json
+"plex": {
+  "name": "Plex",
+  "url": null,
+  "command": "start shell:AppsFolder\\CAF9E577.PlexforWindows_aam28m9va5cke!Plex",
+  "icon_color": "#e5a00d",
+  "icon_file": "plex.png"
+}
+```
+
+For traditional Windows executables:
+```json
+"vlc": {
+  "name": "VLC",
+  "url": null,
+  "command": "\"C:\\Program Files\\VideoLAN\\VLC\\vlc.exe\"",
+  "icon_color": "#ff8800",
+  "icon_file": "vlc.png"
+}
+```
+
+**Finding Windows Store App IDs:**
+
+To find the Application User Model ID (AUMID) for Windows Store apps:
+
+1. Open PowerShell and run:
+```powershell
+Get-StartApps | Where-Object {$_.Name -like "*AppName*"}
+```
+
+2. Look for the `AppID` column in the results. For example:
+```
+Name                                          AppID
+----                                          -----
+Netflix                                       4DF9E0F8.Netflix_mcm4njqhnhss8!Netflix.App
+Disney+                                       Disney.37853FC22B2CE_6rarf9sa4v8jt!App
+```
+
+3. Use the AppID in your config with the `start shell:AppsFolder\` prefix:
+```json
+"command": "start shell:AppsFolder\\AppID_Here"
+```
+
+**Note:** Remember to escape backslashes in JSON by using `\\` instead of `\`.
 
 ### Creating a Desktop Launcher
 
