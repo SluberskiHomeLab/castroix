@@ -12,7 +12,15 @@ import signal
 import platform
 import shutil
 from pathlib import Path
-from PIL import Image, ImageTk
+
+# Try to import PIL for icon support, but make it optional
+try:
+    from PIL import Image, ImageTk
+    PIL_AVAILABLE = True
+except ImportError:
+    PIL_AVAILABLE = False
+    print("Warning: PIL (Pillow) not found. Icons will not be displayed.")
+    print("To enable icons, install Pillow: pip install Pillow")
 
 
 class MediaService:
@@ -235,7 +243,7 @@ class CastroixApp:
         
         # Load the icon image
         icon_image = None
-        if service.icon_file:
+        if service.icon_file and PIL_AVAILABLE:
             icon_path = Path(__file__).parent / service.icon_file
             if icon_path.exists():
                 try:
@@ -245,10 +253,12 @@ class CastroixApp:
                 except Exception as e:
                     print(f"Error loading icon {service.icon_file}: {e}")
         
-        # Service button with icon
+        # Service button with icon or text
         button = tk.Button(
             container_frame,
             image=icon_image if icon_image else None,
+            text=service.name if not icon_image else "",
+            font=("Arial", 14, "bold") if not icon_image else None,
             bg=service.icon_color,
             fg="#ffffff",
             activebackground=self.lighten_color(service.icon_color),
