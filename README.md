@@ -23,7 +23,7 @@ A lightweight cross-platform desktop application for launching and accessing pop
 
 - Python 3.6 or higher
 - Tkinter (usually included with Python)
-- Pillow (PIL) library for image handling
+- Pillow (PIL) library for image handling (optional but recommended for icon display)
 
 ### Platform-Specific Setup
 
@@ -66,6 +66,8 @@ cd castroix
 ```bash
 pip install -r requirements.txt
 ```
+   
+   **Note:** If you skip this step, the application will still work but without icon images. Service buttons will display text labels instead.
 
 3. Copy the Sample Config:
 

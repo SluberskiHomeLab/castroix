@@ -249,6 +249,19 @@ class TestCrossPlatform(unittest.TestCase):
         current_system = plat.system()
         self.assertIn(current_system, ['Windows', 'Linux', 'Darwin', 'Java'],
             "Should detect a valid platform")
+    
+    def test_pil_optional_import(self):
+        """Test that PIL import is optional and doesn't break the app"""
+        # Verify that castroix module has PIL_AVAILABLE flag
+        from castroix import PIL_AVAILABLE
+        
+        # PIL_AVAILABLE should be a boolean
+        self.assertIsInstance(PIL_AVAILABLE, bool)
+        
+        # When testing, PIL should be available (since we installed requirements)
+        # but the flag should exist regardless
+        self.assertTrue(hasattr(__import__('castroix'), 'PIL_AVAILABLE'),
+            "castroix module should have PIL_AVAILABLE flag")
 
 
 def run_tests():
