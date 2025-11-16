@@ -282,15 +282,28 @@ The application features a clean, dark-themed interface with color-coded tiles f
 
 ```
 castroix/
-├── castroix.py        # Main application file
-├── config.json        # Configuration file
-├── requirements.txt   # Python dependencies
-├── plex.png          # Service icon files
+├── castroix_package/      # Main package directory
+│   ├── __init__.py       # Package initialization
+│   ├── __main__.py       # Module entry point
+│   ├── app.py            # Application logic
+│   ├── config.py         # Configuration management
+│   ├── services.py       # Service handling
+│   └── ui.py             # UI components
+├── castroix.py           # Entry point script
+├── config.json           # Configuration file
+├── requirements.txt      # Python dependencies
+├── setup.py              # Package installation
+├── pyproject.toml        # Modern package config
+├── test_castroix.py      # Test suite
+├── ARCHITECTURE.md       # Architecture documentation
+├── plex.png              # Service icon files
 ├── jellyfin.png
 ├── netflix.png
 ├── disney+.png
-└── README.md         # This file
+└── README.md             # This file
 ```
+
+The application now uses a modular architecture for better maintainability and extensibility. See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed information about the project structure.
 
 ### Adding New Services
 
@@ -307,6 +320,21 @@ To add a new streaming service:
   "icon_color": "#1ce783",
   "icon_file": "hulu.png"
 }
+```
+
+You can also add services programmatically:
+
+```python
+from castroix_package import ConfigManager
+
+config = ConfigManager()
+config.add_service('hulu', {
+    'name': 'Hulu',
+    'url': 'https://www.hulu.com',
+    'command': None,
+    'icon_color': '#1ce783',
+    'icon_file': 'hulu.png'
+})
 ```
 
 ## License
