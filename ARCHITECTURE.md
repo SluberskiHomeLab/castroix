@@ -270,7 +270,15 @@ Future enhancement: Services could be loaded as plugins:
 
 ## Future Enhancements
 
-### Potential Improvements
+### Planned Major Features
+The following features are being considered for future development:
+1. **Apple TV-like UI** - Modern, animated interface with smooth transitions
+2. **Automatic Credentials** - Secure credential storage with auto-login
+3. **Embedded Web Browser** - Fully wrapped browser within the application
+
+**Important:** These features have significant architectural implications. See [ARCHITECTURE_EVALUATION.md](ARCHITECTURE_EVALUATION.md) for a comprehensive analysis of whether Python/Tkinter can support these requirements.
+
+### Additional Potential Improvements
 1. **Plugin System** - Load services from external plugins
 2. **Themes** - Customizable color schemes and layouts
 3. **Service Templates** - Pre-configured service types
@@ -324,6 +332,36 @@ Modular structure has minimal impact on startup time due to lazy imports.
 - Stored in application directory
 - No sensitive data should be stored
 
+## Technology Limitations
+
+### Current Tkinter Constraints
+While the modular Python/Tkinter architecture works well for the current feature set, it has limitations for advanced features:
+
+1. **UI Capabilities:**
+   - Limited animation and transition support
+   - Basic styling compared to modern frameworks
+   - No GPU acceleration
+   - Dated appearance without extensive custom work
+
+2. **Web Integration:**
+   - No native browser embedding
+   - External browser launching loses application control
+   - Cannot manage credentials or sessions in external browsers
+
+3. **Advanced Features:**
+   - Implementing Apple TV-like UI would require extensive custom code
+   - Embedded browser (CEF Python) is complex and has deployment issues
+   - Credential management without browser integration is limited
+
+### Architecture Evaluation
+For planned advanced features (Apple TV UI, embedded browser, auto-credentials), a comprehensive evaluation has been conducted. See [ARCHITECTURE_EVALUATION.md](ARCHITECTURE_EVALUATION.md) for:
+- Detailed analysis of technology alternatives
+- Comparison of Electron, Tauri, PyQt, Flutter, and others
+- Recommendations for future development
+- Migration strategies and cost-benefit analysis
+
 ## Conclusion
 
-The refactored architecture provides a solid foundation for future development while maintaining backward compatibility. The modular structure improves code quality, testability, and maintainability without changing the user experience.
+The refactored architecture provides a solid foundation for the **current** feature set while maintaining backward compatibility. The modular structure improves code quality, testability, and maintainability without changing the user experience.
+
+However, for **future** advanced features (modern animated UI, embedded browser, credential management), the current Python/Tkinter stack has significant limitations. See ARCHITECTURE_EVALUATION.md for alternative technology recommendations that better support these planned enhancements.
