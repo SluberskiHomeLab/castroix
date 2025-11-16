@@ -36,7 +36,7 @@ sys.modules['tkinter'].messagebox.showwarning = lambda *args: None
 sys.modules['tkinter'].messagebox.showerror = lambda *args: None
 
 # Now we can import the application modules
-from castroix import MediaService
+from castroix import MediaService, ConfigManager, ServiceManager, PIL_AVAILABLE
 
 
 class TestMediaService(unittest.TestCase):
@@ -252,9 +252,6 @@ class TestCrossPlatform(unittest.TestCase):
     
     def test_pil_optional_import(self):
         """Test that PIL import is optional and doesn't break the app"""
-        # Verify that castroix module has PIL_AVAILABLE flag
-        from castroix import PIL_AVAILABLE
-        
         # PIL_AVAILABLE should be a boolean
         self.assertIsInstance(PIL_AVAILABLE, bool)
         

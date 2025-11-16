@@ -280,17 +280,42 @@ The application features a clean, dark-themed interface with color-coded tiles f
 
 ### Project Structure
 
+The project uses a modular architecture with clear separation of concerns:
+
 ```
 castroix/
-├── castroix.py        # Main application file
-├── config.json        # Configuration file
-├── requirements.txt   # Python dependencies
-├── plex.png          # Service icon files
+├── castroix/              # Main package directory
+│   ├── __init__.py        # Package exports
+│   ├── __main__.py        # Entry point for module execution
+│   ├── config.py          # Configuration management
+│   ├── services.py        # Service definitions and launching logic
+│   └── ui.py              # User interface components
+├── castroix.py            # Backward-compatible wrapper script
+├── config.json            # Configuration file (auto-generated)
+├── requirements.txt       # Python dependencies
+├── test_castroix.py       # Original test suite
+├── test_modular_architecture.py  # Modular architecture tests
+├── plex.png              # Service icon files
 ├── jellyfin.png
 ├── netflix.png
 ├── disney+.png
-└── README.md         # This file
+└── README.md             # This file
 ```
+
+### Architecture
+
+**Modular Design Benefits:**
+- **Separation of Concerns**: Configuration, business logic, and UI are in separate modules
+- **Testability**: Each component can be tested independently
+- **Maintainability**: Easier to understand and modify individual components
+- **Extensibility**: Simple to add new features or customize components
+- **Reusability**: Components can be imported and reused in other projects
+
+**Key Components:**
+- `config.py` - Handles all configuration loading/saving operations
+- `services.py` - Defines MediaService class and ServiceManager
+- `ui.py` - Contains all Tkinter UI components
+- `castroix.py` - Backward-compatible wrapper for direct execution
 
 ### Adding New Services
 
@@ -307,6 +332,21 @@ To add a new streaming service:
   "icon_color": "#1ce783",
   "icon_file": "hulu.png"
 }
+```
+
+### Running Tests
+
+Run the test suite to verify your changes:
+
+```bash
+# Run original tests
+python3 test_castroix.py
+
+# Run modular architecture tests
+python3 test_modular_architecture.py
+
+# Run all tests
+python3 test_castroix.py && python3 test_modular_architecture.py
 ```
 
 ## License

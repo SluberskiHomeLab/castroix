@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 """
-Castroix - A lightweight media streaming launcher for Windows, Linux, and MacOS
-
-This is a backward-compatible wrapper that uses the new modular architecture.
-For direct use, run: python castroix.py
-For module use, run: python -m castroix
+Main entry point for Castroix application.
+Can be run as: python -m castroix
 """
-
-# Import from the new modular package
-from castroix import ConfigManager, ServiceManager, CastroixUI, PIL_AVAILABLE
 import tkinter as tk
+from .config import ConfigManager
+from .services import ServiceManager
+from .ui import CastroixUI
 
 
 def main():
