@@ -194,6 +194,39 @@ class TestFullscreenFeatures(unittest.TestCase):
         self.assertEqual(len(launched_processes), 1)
         self.assertEqual(launched_processes[0]['name'], 'Test App')
         self.assertIsNotNone(launched_processes[0]['process'])
+    
+    def test_fullscreen_mode_initialization(self):
+        """Test that fullscreen mode is configured in the app initialization"""
+        # Read the castroix.py file to verify fullscreen is set
+        from pathlib import Path
+        castroix_path = Path(__file__).parent / "castroix.py"
+        
+        with open(castroix_path, 'r') as f:
+            content = f.read()
+        
+        # Verify that fullscreen mode is enabled in __init__
+        self.assertIn("attributes('-fullscreen', True)", content,
+            "App should set fullscreen mode on initialization")
+        
+        # Verify that Escape key binding exists to exit fullscreen
+        self.assertIn("bind('<Escape>'", content,
+            "App should have Escape key binding to exit fullscreen")
+    
+    def test_image_button_sizing(self):
+        """Test that button sizing is handled correctly for image vs text buttons"""
+        from pathlib import Path
+        castroix_path = Path(__file__).parent / "castroix.py"
+        
+        with open(castroix_path, 'r') as f:
+            content = f.read()
+        
+        # Verify that button configuration considers image vs text buttons differently
+        self.assertIn("if not icon_image:", content,
+            "Button configuration should handle image buttons differently")
+        
+        # Verify that images are resized to appropriate size for fullscreen
+        self.assertIn("resize((120, 120)", content,
+            "Images should be resized to 120x120 for better visibility")
 
 
 class TestCrossPlatform(unittest.TestCase):

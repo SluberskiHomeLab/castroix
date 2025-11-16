@@ -107,8 +107,11 @@ class CastroixApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Castroix - Media Hub")
-        self.root.geometry("800x600")
+        # Start in fullscreen mode
+        self.root.attributes('-fullscreen', True)
         self.root.configure(bg="#1a1a1a")
+        # Bind Escape key to exit fullscreen
+        self.root.bind('<Escape>', lambda e: self.root.attributes('-fullscreen', False))
         
         # Track launched processes
         self.launched_processes = []
@@ -248,27 +251,35 @@ class CastroixApp:
             if icon_path.exists():
                 try:
                     img = Image.open(icon_path)
-                    img = img.resize((80, 80), Image.Resampling.LANCZOS)
+                    # Resize to larger size for better visibility in fullscreen
+                    img = img.resize((120, 120), Image.Resampling.LANCZOS)
                     icon_image = ImageTk.PhotoImage(img)
                 except Exception as e:
                     print(f"Error loading icon {service.icon_file}: {e}")
         
         # Service button with icon or text
-        button = tk.Button(
-            container_frame,
-            image=icon_image if icon_image else None,
-            text=service.name if not icon_image else "",
-            font=("Arial", 14, "bold") if not icon_image else None,
-            bg=service.icon_color,
-            fg="#ffffff",
-            activebackground=self.lighten_color(service.icon_color),
-            activeforeground="#ffffff",
-            relief="flat",
-            cursor="hand2",
-            command=lambda: self.launch_service(service),
-            width=120,
-            height=120
-        )
+        # Note: width/height are only set for text buttons (where they represent characters)
+        # For image buttons, the size is determined by the image itself
+        button_config = {
+            'master': container_frame,
+            'image': icon_image if icon_image else None,
+            'text': service.name if not icon_image else "",
+            'font': ("Arial", 14, "bold") if not icon_image else None,
+            'bg': service.icon_color,
+            'fg': "#ffffff",
+            'activebackground': self.lighten_color(service.icon_color),
+            'activeforeground': "#ffffff",
+            'relief': "flat",
+            'cursor': "hand2",
+            'command': lambda: self.launch_service(service)
+        }
+        
+        # Only add width/height for text buttons
+        if not icon_image:
+            button_config['width'] = 20
+            button_config['height'] = 6
+        
+        button = tk.Button(**button_config)
         button.pack(pady=(0, 10))
         
         # Keep a reference to prevent garbage collection
