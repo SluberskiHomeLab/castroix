@@ -6,6 +6,8 @@ import webbrowser
 import subprocess
 import platform
 import shutil
+import os
+import shlex
 from typing import Optional, Callable, List, Tuple
 
 
@@ -54,8 +56,8 @@ class MediaService:
                 
                 launched = False
                 for browser_name, browser_cmd in browsers:
-                    # Check if browser is available using cross-platform shutil.which
-                    if shutil.which(browser_name):
+                    # Check if browser is available
+                    if self._is_browser_available(browser_name, browser_cmd, system):
                         # Format the command with the URL
                         cmd = browser_cmd.format(url=self.url)
                         process = subprocess.Popen(cmd, shell=True)
@@ -64,7 +66,9 @@ class MediaService:
                 
                 if not launched:
                     # Fallback to default browser (won't be fullscreen)
-                    webbrowser.open(self.url)
+                    success = webbrowser.open(self.url)
+                    if not success:
+                        raise RuntimeError(f"Failed to open {self.url} in default browser")
             else:
                 # No URL or command configured
                 return None
@@ -76,6 +80,37 @@ class MediaService:
             return process
         except Exception as e:
             raise RuntimeError(f"Failed to launch {self.name}: {str(e)}")
+    
+    def _is_browser_available(self, browser_name: str, browser_cmd: str, system: str) -> bool:
+        """
+        Check if a browser is available on the system
+        
+        Args:
+            browser_name: Name of the browser to check
+            browser_cmd: Command template for the browser
+            system: Operating system name
+        
+        Returns:
+            True if browser is available, False otherwise
+        """
+        if system == "Darwin":  # macOS
+            # For macOS, extract the executable path from the command and check if it exists
+            # Use shlex.split to properly handle escaped spaces in paths
+            try:
+                parts = shlex.split(browser_cmd.replace('{url}', 'placeholder'))
+                if parts:
+                    exe_path = parts[0]
+                    # If it's a full path (starts with /), check if it exists
+                    if exe_path.startswith('/'):
+                        return os.path.exists(exe_path)
+                    # Otherwise, check using shutil.which for commands like 'open'
+                    return shutil.which(exe_path) is not None
+            except ValueError:
+                # If shlex fails to parse, fall back to shutil.which
+                return shutil.which(browser_name) is not None
+        else:
+            # For Windows and Linux, use shutil.which
+            return shutil.which(browser_name) is not None
     
     def _get_browsers_for_platform(self, system: str) -> List[Tuple[str, str]]:
         """
