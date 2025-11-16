@@ -66,7 +66,9 @@ class MediaService:
                 
                 if not launched:
                     # Fallback to default browser (won't be fullscreen)
-                    webbrowser.open(self.url)
+                    success = webbrowser.open(self.url)
+                    if not success:
+                        raise RuntimeError(f"Failed to open {self.url} in default browser")
             else:
                 # No URL or command configured
                 return None

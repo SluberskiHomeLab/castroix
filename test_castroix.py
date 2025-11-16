@@ -366,6 +366,46 @@ class TestCrossPlatform(unittest.TestCase):
         # but the flag should exist regardless
         self.assertTrue(hasattr(ui, 'PIL_AVAILABLE'),
             "castroix_package.ui module should have PIL_AVAILABLE flag")
+    
+    def test_browser_availability_detection(self):
+        """Test that browser availability detection works correctly"""
+        service = MediaService(
+            name="Test Service",
+            url="https://www.example.com",
+            icon_color="#4a90e2"
+        )
+        
+        # Test that _is_browser_available method exists
+        self.assertTrue(hasattr(service, '_is_browser_available'))
+        
+        # Test Linux browser detection
+        browsers_linux = service._get_browsers_for_platform("Linux")
+        self.assertGreater(len(browsers_linux), 0, 
+            "Should have Linux browser configurations")
+        
+        # Test that at least one browser can be detected (or method runs without error)
+        for browser_name, browser_cmd in browsers_linux:
+            try:
+                result = service._is_browser_available(browser_name, browser_cmd, "Linux")
+                self.assertIsInstance(result, bool, 
+                    "_is_browser_available should return boolean")
+                # Don't assert True because not all browsers may be installed
+            except Exception as e:
+                self.fail(f"_is_browser_available raised exception: {e}")
+        
+        # Test macOS browser detection (with mock paths)
+        browsers_macos = service._get_browsers_for_platform("Darwin")
+        self.assertGreater(len(browsers_macos), 0, 
+            "Should have macOS browser configurations")
+        
+        # Test that macOS detection works without errors
+        for browser_name, browser_cmd in browsers_macos:
+            try:
+                result = service._is_browser_available(browser_name, browser_cmd, "Darwin")
+                self.assertIsInstance(result, bool, 
+                    "_is_browser_available should return boolean")
+            except Exception as e:
+                self.fail(f"_is_browser_available raised exception: {e}")
 
 
 def run_tests():
