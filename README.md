@@ -305,6 +305,8 @@ castroix/
 
 The application now uses a modular architecture for better maintainability and extensibility. See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed information about the project structure.
 
+**Future Development:** For planned advanced features (Apple TV-like UI, embedded browser, auto-credentials), see [ARCHITECTURE_EVALUATION.md](ARCHITECTURE_EVALUATION.md) for a comprehensive evaluation of technology alternatives and recommendations.
+
 ### Adding New Services
 
 To add a new streaming service:
