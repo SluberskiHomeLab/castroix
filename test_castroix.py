@@ -36,7 +36,9 @@ sys.modules['tkinter'].messagebox.showwarning = lambda *args: None
 sys.modules['tkinter'].messagebox.showerror = lambda *args: None
 
 # Now we can import the application modules
-from castroix import MediaService
+from castroix_package.services import MediaService
+from castroix_package.config import ConfigManager
+from castroix_package.utils import lighten_color, darken_color, is_valid_hex_color
 
 
 class TestMediaService(unittest.TestCase):
@@ -158,6 +160,75 @@ class TestColorUtils(unittest.TestCase):
                     self.fail(f"{service_key} color is not valid hex")
 
 
+class TestUtilities(unittest.TestCase):
+    """Test utility functions"""
+    
+    def test_lighten_color(self):
+        """Test color lightening"""
+        # Test basic lightening
+        result = lighten_color("#808080")  # Gray
+        self.assertTrue(result.startswith("#"))
+        self.assertEqual(len(result), 7)
+        
+        # Lightened color should have higher RGB values
+        original_val = int("80", 16)
+        result_val = int(result[1:3], 16)
+        self.assertGreater(result_val, original_val)
+    
+    def test_darken_color(self):
+        """Test color darkening"""
+        # Test basic darkening
+        result = darken_color("#808080")  # Gray
+        self.assertTrue(result.startswith("#"))
+        self.assertEqual(len(result), 7)
+        
+        # Darkened color should have lower RGB values
+        original_val = int("80", 16)
+        result_val = int(result[1:3], 16)
+        self.assertLess(result_val, original_val)
+    
+    def test_is_valid_hex_color(self):
+        """Test hex color validation"""
+        # Valid colors
+        self.assertTrue(is_valid_hex_color("#ff0000"))
+        self.assertTrue(is_valid_hex_color("#123abc"))
+        self.assertTrue(is_valid_hex_color("#000000"))
+        
+        # Invalid colors
+        self.assertFalse(is_valid_hex_color("ff0000"))  # Missing #
+        self.assertFalse(is_valid_hex_color("#ff00"))   # Too short
+        self.assertFalse(is_valid_hex_color("#gggggg"))  # Invalid hex
+        self.assertFalse(is_valid_hex_color("#ff00000"))  # Too long
+
+
+class TestConfigManager(unittest.TestCase):
+    """Test configuration manager"""
+    
+    def test_config_manager_creation(self):
+        """Test creating a ConfigManager instance"""
+        config_manager = ConfigManager()
+        self.assertIsNotNone(config_manager.config)
+        self.assertIn("services", config_manager.config)
+    
+    def test_get_services(self):
+        """Test getting services from config"""
+        config_manager = ConfigManager()
+        services = config_manager.get_services()
+        self.assertIsInstance(services, dict)
+        self.assertGreater(len(services), 0)
+    
+    def test_default_services(self):
+        """Test that default services are present"""
+        config_manager = ConfigManager()
+        services = config_manager.get_services()
+        
+        # Check for expected default services
+        self.assertIn("plex", services)
+        self.assertIn("jellyfin", services)
+        self.assertIn("netflix", services)
+        self.assertIn("disneyplus", services)
+
+
 class TestFullscreenFeatures(unittest.TestCase):
     """Test fullscreen and keybind features"""
     
@@ -197,11 +268,11 @@ class TestFullscreenFeatures(unittest.TestCase):
     
     def test_fullscreen_mode_initialization(self):
         """Test that fullscreen mode is configured in the app initialization"""
-        # Read the castroix.py file to verify fullscreen is set
+        # Read the app.py file to verify fullscreen is set
         from pathlib import Path
-        castroix_path = Path(__file__).parent / "castroix.py"
+        app_path = Path(__file__).parent / "castroix_package" / "app.py"
         
-        with open(castroix_path, 'r') as f:
+        with open(app_path, 'r') as f:
             content = f.read()
         
         # Verify that fullscreen mode is enabled in __init__
@@ -215,13 +286,13 @@ class TestFullscreenFeatures(unittest.TestCase):
     def test_image_button_sizing(self):
         """Test that button sizing is handled correctly for image vs text buttons"""
         from pathlib import Path
-        castroix_path = Path(__file__).parent / "castroix.py"
+        ui_path = Path(__file__).parent / "castroix_package" / "ui.py"
         
-        with open(castroix_path, 'r') as f:
+        with open(ui_path, 'r') as f:
             content = f.read()
         
         # Verify that button configuration considers image vs text buttons differently
-        self.assertIn("if not icon_image:", content,
+        self.assertIn("if not self.icon_image:", content,
             "Button configuration should handle image buttons differently")
         
         # Verify that images are resized to appropriate size for fullscreen
@@ -285,16 +356,16 @@ class TestCrossPlatform(unittest.TestCase):
     
     def test_pil_optional_import(self):
         """Test that PIL import is optional and doesn't break the app"""
-        # Verify that castroix module has PIL_AVAILABLE flag
-        from castroix import PIL_AVAILABLE
+        # Verify that castroix_package.ui module has PIL_AVAILABLE flag
+        from castroix_package import ui
         
         # PIL_AVAILABLE should be a boolean
-        self.assertIsInstance(PIL_AVAILABLE, bool)
+        self.assertIsInstance(ui.PIL_AVAILABLE, bool)
         
         # When testing, PIL should be available (since we installed requirements)
         # but the flag should exist regardless
-        self.assertTrue(hasattr(__import__('castroix'), 'PIL_AVAILABLE'),
-            "castroix module should have PIL_AVAILABLE flag")
+        self.assertTrue(hasattr(ui, 'PIL_AVAILABLE'),
+            "castroix_package.ui module should have PIL_AVAILABLE flag")
 
 
 def run_tests():
@@ -307,6 +378,8 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestMediaService))
     suite.addTests(loader.loadTestsFromTestCase(TestConfiguration))
     suite.addTests(loader.loadTestsFromTestCase(TestColorUtils))
+    suite.addTests(loader.loadTestsFromTestCase(TestUtilities))
+    suite.addTests(loader.loadTestsFromTestCase(TestConfigManager))
     suite.addTests(loader.loadTestsFromTestCase(TestFullscreenFeatures))
     suite.addTests(loader.loadTestsFromTestCase(TestCrossPlatform))
     
