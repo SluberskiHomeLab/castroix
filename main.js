@@ -8,10 +8,16 @@ const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
 const Store = require('electron-store');
+const os = require('os');
+const crypto = require('crypto');
+
+// Generate a unique encryption key per installation using machine hostname
+const machineId = os.hostname();
+const encryptionKey = crypto.createHash('sha256').update(machineId).digest('hex');
 
 // Initialize secure storage for credentials
 const store = new Store({
-  encryptionKey: 'castroix-secure-key-2024'
+  encryptionKey: encryptionKey
 });
 
 let mainWindow;
