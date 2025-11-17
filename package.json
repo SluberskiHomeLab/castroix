@@ -1,0 +1,28 @@
+{
+  "name": "castroix",
+  "version": "2.0.0",
+  "description": "Media Hub for Multi-Media Consumption - Electron Edition",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "test": "python test_castroix.py && node test_electron.js"
+  },
+  "keywords": [
+    "media",
+    "streaming",
+    "plex",
+    "jellyfin",
+    "netflix",
+    "disney-plus"
+  ],
+  "author": "SluberskiHomeLab",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SluberskiHomeLab/castroix.git"
+  },
+  "dependencies": {
+    "electron": "^39.2.1",
+    "electron-store": "^8.1.0"
+  }
+}

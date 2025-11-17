@@ -2,15 +2,69 @@
 
 Media Hub for Multi-Media Consumption
 
-A lightweight cross-platform desktop application for launching and accessing popular media streaming services including Plex, Jellyfin, Netflix, and Disney+. Works on Windows, Linux, and MacOS.
+A cross-platform desktop application for launching and accessing popular media streaming services including Plex, Jellyfin, Netflix, and Disney+. Works on Windows, Linux, and MacOS.
+
+## 🆕 NEW: Electron Edition Available!
+
+Castroix now comes in two versions:
+
+### **Electron Edition** (Recommended - New!)
+- 🎨 **Apple TV-like UI** - Smooth animations, modern design, focus navigation
+- 🔐 **Automatic Credentials** - Secure storage with auto-login
+- 🌐 **Embedded Browser** - Full web browser wrapped in the application
+- ⚡ **Modern Interface** - Built with Electron for a premium experience
+
+👉 **[See Electron Edition Documentation](README-ELECTRON.md)**
+
+### **Python Edition** (Classic)
+- 🚀 **Lightweight** - Uses only Python standard library
+- 🎨 **Simple UI** - Color-coded service tiles with Tkinter
+- ⚙️ **Configurable** - Service URLs and commands
+
+---
 
 ## Features
 
+### Common Features (Both Versions)
 - 🎬 Quick access to multiple media streaming services
 - 🖥️ Clean, modern GUI interface
 - ⚙️ Configurable service URLs and commands
-- 🚀 Lightweight - uses only Python standard library
 - 🎨 Color-coded service tiles
+- 🖼️ Icon support for services
+
+### Electron Edition Features
+- 🔐 Secure credential storage and auto-login
+- 🌐 Embedded browser for in-app streaming
+- ✨ Apple TV-like smooth animations
+- ⌨️ Full keyboard navigation with arrow keys
+- 🎯 Focus-based UI for TV/remote control use
+
+## Quick Start
+
+### Electron Edition (Recommended)
+
+```bash
+# Clone and install
+git clone https://github.com/SluberskiHomeLab/castroix.git
+cd castroix
+npm install
+
+# Run
+npm start
+```
+
+### Python Edition
+
+```bash
+# Clone and install
+git clone https://github.com/SluberskiHomeLab/castroix.git
+cd castroix
+pip install -r requirements.txt
+cp config.json.sample config.json
+
+# Run
+python castroix.py
+```
 
 ## Supported Services
 
@@ -21,6 +75,11 @@ A lightweight cross-platform desktop application for launching and accessing pop
 
 ## Requirements
 
+### Electron Edition
+- Node.js 16.x or higher
+- npm (comes with Node.js)
+
+### Python Edition
 - Python 3.6 or higher
 - Tkinter (usually included with Python)
 - Pillow (PIL) library for image handling (optional but recommended for icon display)
