@@ -3,6 +3,11 @@
  * Handles UI interactions and service launching
  */
 
+// Grid layout constants
+// This should match the CSS grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
+// The value accounts for minimum card width (300px) + gap (40px) + padding considerations
+const CARD_WIDTH_WITH_GAP = 400;
+
 let config = null;
 let services = [];
 let focusedIndex = 0;
@@ -156,7 +161,7 @@ function setupKeyboardNavigation() {
     }
 
     const cards = document.querySelectorAll('.service-card');
-    const cols = Math.floor(window.innerWidth / 400); // Approximate columns
+    const cols = Math.floor(window.innerWidth / CARD_WIDTH_WITH_GAP);
 
     switch (e.key) {
       case 'ArrowUp':
