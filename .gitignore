@@ -40,4 +40,9 @@ Thumbs.db
 *.log
 /tmp/
 
+# Node.js
+node_modules/
+package-lock.json
+npm-debug.log*
+
 config.json
