@@ -98,7 +98,7 @@ castroix/
 **Key Features:**
 - Fullscreen mode by default
 - Process tracking for launched apps
-- Keyboard shortcuts (Ctrl+Q to close last app)
+- Keyboard shortcuts (Ctrl+Q to close embedded browser or last app)
 - Clean separation from UI implementation
 
 ### `castroix_package/utils.py`
@@ -431,8 +431,8 @@ castroix/
 **Keyboard Navigation:**
 - Arrow keys for focus movement
 - Enter to launch service
-- Esc to go back/exit fullscreen
-- Ctrl+Q to close last app
+- Esc to close embedded browser/exit fullscreen
+- Ctrl+Q to close embedded browser or last app
 - Ctrl+S to open credentials manager
 
 ### Apple TV-like UI Design

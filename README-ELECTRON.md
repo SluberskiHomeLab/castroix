@@ -59,8 +59,8 @@ This will launch the Electron app in fullscreen mode.
 |----------|--------|
 | `↑↓←→` | Navigate between services |
 | `Enter` | Launch selected service |
-| `Esc` | Back/Exit fullscreen |
-| `Ctrl+Q` | Close last launched app |
+| `Esc` | Close embedded browser / Exit fullscreen |
+| `Ctrl+Q` | Close embedded browser or last launched app |
 | `Ctrl+S` | Open credentials manager |
 
 ### Managing Credentials
