@@ -1,3 +1,0 @@
-# Castroix - Media Streaming Launcher
-# Requires Python 3.6 or higher with Tkinter (usually included by default)
-Pillow>=9.0.0

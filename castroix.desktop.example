@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Castroix
-Comment=Media Hub for Multi-Media Consumption
-Exec=/usr/bin/python3 /path/to/castroix/castroix.py
+Comment=Media Hub for Multi-Media Consumption - Electron Edition
+Exec=/path/to/castroix/castroix-electron.sh
 Icon=video-display
 Terminal=false
 Type=Application

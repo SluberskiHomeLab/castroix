@@ -1,29 +1,14 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+# Node.js
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Virtual environments
-venv/
-ENV/
-env/
+# Electron
+dist/
+build/
+out/
 
 # IDE
 .vscode/
@@ -40,9 +25,5 @@ Thumbs.db
 *.log
 /tmp/
 
-# Node.js
-node_modules/
-package-lock.json
-npm-debug.log*
-
+# Configuration (user-specific)
 config.json
