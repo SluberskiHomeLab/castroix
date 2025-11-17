@@ -173,6 +173,51 @@ function testServiceConfig() {
   }
 }
 
+// Test keyboard shortcut handling in renderer.js
+function testKeyboardShortcuts() {
+  console.log('Testing keyboard shortcut implementation...');
+  
+  try {
+    const rendererJs = fs.readFileSync(path.join(__dirname, 'renderer.js'), 'utf-8');
+    
+    // Check that Ctrl+Q handler exists
+    if (!rendererJs.includes("e.ctrlKey && e.key === 'q'")) {
+      console.error('❌ Ctrl+Q handler not found in renderer.js');
+      return false;
+    }
+    
+    // Check that it closes embedded browser when home-view is hidden
+    if (!rendererJs.includes("document.getElementById('home-view').style.display === 'none'")) {
+      console.error('❌ Ctrl+Q does not check for embedded browser state');
+      return false;
+    }
+    
+    // Check that it calls closeBrowser
+    if (!rendererJs.includes('window.castroix.closeBrowser()')) {
+      console.error('❌ Ctrl+Q does not call closeBrowser for embedded browser');
+      return false;
+    }
+    
+    // Check that Ctrl+S handler exists
+    if (!rendererJs.includes("e.ctrlKey && e.key === 's'")) {
+      console.error('❌ Ctrl+S handler not found in renderer.js');
+      return false;
+    }
+    
+    // Check that Escape handler exists
+    if (!rendererJs.includes("e.key === 'Escape'") && !rendererJs.includes("case 'Escape':")) {
+      console.error('❌ Escape key handler not found in renderer.js');
+      return false;
+    }
+    
+    console.log('✅ Keyboard shortcuts are properly implemented');
+    return true;
+  } catch (error) {
+    console.error('❌ Error testing keyboard shortcuts:', error.message);
+    return false;
+  }
+}
+
 // Run all tests
 function runTests() {
   console.log('\n=== Castroix Electron Tests ===\n');
@@ -182,7 +227,8 @@ function runTests() {
     testPackageJson,
     testConfigLoading,
     testServiceConfig,
-    testHtmlStructure
+    testHtmlStructure,
+    testKeyboardShortcuts
   ];
   
   let passed = 0;
