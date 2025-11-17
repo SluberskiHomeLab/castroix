@@ -211,14 +211,23 @@ function setupKeyboardNavigation() {
         break;
     }
 
-    // Ctrl+Q - Close last app
+    // Ctrl+Q - Close embedded browser or last app
     if (e.ctrlKey && e.key === 'q') {
       e.preventDefault();
-      const result = await window.castroix.closeLastApp();
-      if (result.success) {
-        showNotification(`Closed ${result.name}`);
+      // Check if in embedded browser
+      if (document.getElementById('home-view').style.display === 'none') {
+        // Close embedded browser
+        await window.castroix.closeBrowser();
+        document.getElementById('home-view').style.display = 'flex';
+        showNotification('Browser closed');
       } else {
-        showNotification('No apps running');
+        // Close last external app
+        const result = await window.castroix.closeLastApp();
+        if (result.success) {
+          showNotification(`Closed ${result.name}`);
+        } else {
+          showNotification('No apps running');
+        }
       }
     }
 
