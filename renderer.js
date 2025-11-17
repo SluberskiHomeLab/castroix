@@ -327,8 +327,44 @@ function showNotification(message) {
 
 function showError(message) {
   console.error('Error:', message);
-  alert(`Error: ${message}`);
+  showErrorToast(message);
 }
 
 // Initialize on load
-window.addEventListener('DOMContentLoaded', init);
+window.addEventListener('DOMContentLoaded', () => {
+  // Inject error toast element if not present
+  if (!document.getElementById('error-toast')) {
+    const toast = document.createElement('div');
+    toast.id = 'error-toast';
+    toast.style.position = 'fixed';
+    toast.style.bottom = '40px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = 'rgba(200, 0, 0, 0.95)';
+    toast.style.color = '#fff';
+    toast.style.padding = '16px 32px';
+    toast.style.borderRadius = '8px';
+    toast.style.fontSize = '1.2em';
+    toast.style.zIndex = '9999';
+    toast.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+    toast.style.display = 'none';
+    toast.style.pointerEvents = 'none';
+    toast.style.transition = 'opacity 0.3s';
+    document.body.appendChild(toast);
+  }
+  init();
+});
+
+function showErrorToast(message) {
+  const toast = document.getElementById('error-toast');
+  if (!toast) return;
+  toast.textContent = `Error: ${message}`;
+  toast.style.display = 'block';
+  toast.style.opacity = '1';
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 300);
+  }, 3500);
+}
