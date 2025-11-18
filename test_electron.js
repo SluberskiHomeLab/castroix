@@ -273,6 +273,24 @@ function testGlobalShortcuts() {
       return false;
     }
     
+    // Check that before-input-event handler is set up for BrowserView
+    if (!mainJs.includes("currentBrowserView.webContents.on('before-input-event'")) {
+      console.error('❌ before-input-event handler not set up for BrowserView');
+      return false;
+    }
+    
+    // Check that before-input-event handles Escape key
+    if (!mainJs.includes("input.key === 'Escape'")) {
+      console.error('❌ before-input-event does not handle Escape key');
+      return false;
+    }
+    
+    // Check that before-input-event handles Ctrl+Q
+    if (!mainJs.includes("input.key === 'q' && (input.control || input.meta)")) {
+      console.error('❌ before-input-event does not handle Ctrl+Q');
+      return false;
+    }
+    
     console.log('✅ Global shortcuts for BrowserView are properly implemented');
     return true;
   } catch (error) {
