@@ -26,6 +26,15 @@ body {
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
 }
 
+/* Home View - Main container for the home screen */
+.home-view {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
 /* Header Styles */
 .header {
   text-align: center;
