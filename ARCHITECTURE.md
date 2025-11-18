@@ -245,7 +245,24 @@ currentBrowserView = new BrowserView({
 mainWindow.addBrowserView(currentBrowserView);
 currentBrowserView.setBounds({ x: 0, y: 0, width, height });
 currentBrowserView.webContents.loadURL(url);
+
+// Handle keyboard shortcuts via before-input-event
+// This is necessary because global shortcuts don't work when BrowserView has focus
+currentBrowserView.webContents.on('before-input-event', (event, input) => {
+  if (input.type === 'keyDown' && input.key === 'Escape') {
+    event.preventDefault();
+    closeBrowserView();
+  }
+  if (input.type === 'keyDown' && input.key === 'q' && (input.control || input.meta)) {
+    event.preventDefault();
+    closeBrowserView();
+  }
+});
 ```
+
+### Keyboard Shortcut Handling
+
+When a BrowserView is active and has focus, global shortcuts registered with `globalShortcut.register()` may not work reliably because the BrowserView captures keyboard events before they reach the global shortcut handler. To solve this, we use the `before-input-event` listener on the BrowserView's webContents to intercept keyboard shortcuts before they're processed by the web page. This ensures that Escape and Ctrl+Q (or Cmd+Q on macOS) consistently close the embedded browser regardless of what web page is loaded.
 
 ## Service Launching
 
