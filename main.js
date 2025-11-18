@@ -11,6 +11,14 @@ const Store = require('electron-store');
 const os = require('os');
 const crypto = require('crypto');
 
+// Configure Electron command-line switches to prevent GPU/WebGL errors
+// These switches help avoid "Exiting GPU process due to errors" and WebGL fallback warnings
+// Note: These switches trade some GPU sandboxing security for stability and cleaner logs
+// This is acceptable for a media consumption application running trusted content
+app.commandLine.appendSwitch('disable-gpu-sandbox');
+app.commandLine.appendSwitch('ignore-gpu-blocklist'); // Updated from deprecated 'ignore-gpu-blacklist'
+app.commandLine.appendSwitch('disable-software-rasterizer');
+
 // Generate a unique encryption key per installation using machine hostname
 const machineId = os.hostname();
 const encryptionKey = crypto.createHash('sha256').update(machineId).digest('hex');
