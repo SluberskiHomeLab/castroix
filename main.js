@@ -159,6 +159,22 @@ function createBrowserView(url) {
   // Register global shortcuts to close the browser view
   registerBrowserShortcuts();
 
+  // Handle keyboard shortcuts in the BrowserView
+  // This is necessary because global shortcuts don't work when BrowserView has focus
+  currentBrowserView.webContents.on('before-input-event', (event, input) => {
+    // Handle Escape key
+    if (input.type === 'keyDown' && input.key === 'Escape') {
+      event.preventDefault();
+      closeBrowserView();
+    }
+    
+    // Handle Ctrl+Q (or Cmd+Q on macOS)
+    if (input.type === 'keyDown' && input.key === 'q' && (input.control || input.meta)) {
+      event.preventDefault();
+      closeBrowserView();
+    }
+  });
+
   return currentBrowserView;
 }
 
