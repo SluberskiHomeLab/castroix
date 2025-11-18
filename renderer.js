@@ -212,7 +212,7 @@ function setupKeyboardNavigation() {
     }
 
     // Ctrl+Q - Close embedded browser or last app
-    if (e.ctrlKey && e.key === 'q') {
+    if (e.ctrlKey && e.key.toLowerCase() === 'q') {
       e.preventDefault();
       // Check if in embedded browser
       if (document.getElementById('home-view').style.display === 'none') {
@@ -232,7 +232,7 @@ function setupKeyboardNavigation() {
     }
 
     // Ctrl+S - Show credentials modal
-    if (e.ctrlKey && e.key === 's') {
+    if (e.ctrlKey && e.key.toLowerCase() === 's') {
       e.preventDefault();
       showCredentialsModal();
     }

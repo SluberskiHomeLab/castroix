@@ -180,9 +180,9 @@ function testKeyboardShortcuts() {
   try {
     const rendererJs = fs.readFileSync(path.join(__dirname, 'renderer.js'), 'utf-8');
     
-    // Check that Ctrl+Q handler exists
-    if (!rendererJs.includes("e.ctrlKey && e.key === 'q'")) {
-      console.error('❌ Ctrl+Q handler not found in renderer.js');
+    // Check that Ctrl+Q handler exists with case-insensitive comparison
+    if (!rendererJs.includes("e.ctrlKey && e.key.toLowerCase() === 'q'")) {
+      console.error('❌ Ctrl+Q handler not found or not case-insensitive in renderer.js');
       return false;
     }
     
@@ -198,9 +198,9 @@ function testKeyboardShortcuts() {
       return false;
     }
     
-    // Check that Ctrl+S handler exists
-    if (!rendererJs.includes("e.ctrlKey && e.key === 's'")) {
-      console.error('❌ Ctrl+S handler not found in renderer.js');
+    // Check that Ctrl+S handler exists with case-insensitive comparison
+    if (!rendererJs.includes("e.ctrlKey && e.key.toLowerCase() === 's'")) {
+      console.error('❌ Ctrl+S handler not found or not case-insensitive in renderer.js');
       return false;
     }
     
