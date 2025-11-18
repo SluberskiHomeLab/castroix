@@ -3,7 +3,7 @@
  * Handles window management, IPC communication, and system integration
  */
 
-const { app, BrowserWindow, BrowserView, ipcMain, Menu } = require('electron');
+const { app, BrowserWindow, BrowserView, ipcMain, Menu, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
@@ -123,6 +123,8 @@ function createWindow() {
       mainWindow.removeBrowserView(currentBrowserView);
       currentBrowserView = null;
     }
+    // Unregister shortcuts when window closes
+    unregisterBrowserShortcuts();
     mainWindow = null;
   });
 }
@@ -132,6 +134,8 @@ function createBrowserView(url) {
   // Remove existing browser view if any
   if (currentBrowserView) {
     mainWindow.removeBrowserView(currentBrowserView);
+    // Unregister existing shortcuts before creating new browser view
+    unregisterBrowserShortcuts();
   }
 
   // Create new browser view
@@ -152,7 +156,45 @@ function createBrowserView(url) {
   // Load the URL
   currentBrowserView.webContents.loadURL(url);
 
+  // Register global shortcuts to close the browser view
+  registerBrowserShortcuts();
+
   return currentBrowserView;
+}
+
+// Register global keyboard shortcuts for browser view control
+function registerBrowserShortcuts() {
+  // Escape key to close browser view
+  globalShortcut.register('Escape', () => {
+    if (currentBrowserView && mainWindow) {
+      closeBrowserView();
+    }
+  });
+
+  // Ctrl+Q to close browser view
+  globalShortcut.register('CommandOrControl+Q', () => {
+    if (currentBrowserView && mainWindow) {
+      closeBrowserView();
+    }
+  });
+}
+
+// Unregister global keyboard shortcuts
+function unregisterBrowserShortcuts() {
+  globalShortcut.unregister('Escape');
+  globalShortcut.unregister('CommandOrControl+Q');
+}
+
+// Helper function to close browser view and show home
+function closeBrowserView() {
+  if (currentBrowserView && mainWindow) {
+    mainWindow.removeBrowserView(currentBrowserView);
+    currentBrowserView = null;
+    // Unregister shortcuts when browser is closed
+    unregisterBrowserShortcuts();
+    // Show the main interface again
+    mainWindow.webContents.send('show-home');
+  }
 }
 
 // IPC Handlers
@@ -221,12 +263,7 @@ ipcMain.handle('launch-service', async (event, service) => {
 });
 
 ipcMain.handle('close-browser', () => {
-  if (currentBrowserView) {
-    mainWindow.removeBrowserView(currentBrowserView);
-    currentBrowserView = null;
-  }
-  // Show the main interface again
-  mainWindow.webContents.send('show-home');
+  closeBrowserView();
   return true;
 });
 
@@ -282,6 +319,9 @@ app.on('window-all-closed', () => {
 });
 
 app.on('before-quit', () => {
+  // Unregister all global shortcuts
+  globalShortcut.unregisterAll();
+  
   // Clean up launched processes
   launchedProcesses.forEach(app => {
     if (app.process && !app.process.killed) {

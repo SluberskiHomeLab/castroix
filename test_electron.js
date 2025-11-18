@@ -218,6 +218,69 @@ function testKeyboardShortcuts() {
   }
 }
 
+// Test global shortcuts in main.js for BrowserView control
+function testGlobalShortcuts() {
+  console.log('Testing global keyboard shortcuts for BrowserView...');
+  
+  try {
+    const mainJs = fs.readFileSync(path.join(__dirname, 'main.js'), 'utf-8');
+    
+    // Check that globalShortcut is imported
+    if (!mainJs.includes('globalShortcut')) {
+      console.error('❌ globalShortcut not imported in main.js');
+      return false;
+    }
+    
+    // Check that registerBrowserShortcuts function exists
+    if (!mainJs.includes('function registerBrowserShortcuts()')) {
+      console.error('❌ registerBrowserShortcuts function not found in main.js');
+      return false;
+    }
+    
+    // Check that unregisterBrowserShortcuts function exists
+    if (!mainJs.includes('function unregisterBrowserShortcuts()')) {
+      console.error('❌ unregisterBrowserShortcuts function not found in main.js');
+      return false;
+    }
+    
+    // Check that closeBrowserView helper function exists
+    if (!mainJs.includes('function closeBrowserView()')) {
+      console.error('❌ closeBrowserView helper function not found in main.js');
+      return false;
+    }
+    
+    // Check that Escape is registered
+    if (!mainJs.includes("globalShortcut.register('Escape'")) {
+      console.error('❌ Escape global shortcut not registered in main.js');
+      return false;
+    }
+    
+    // Check that CommandOrControl+Q is registered
+    if (!mainJs.includes("globalShortcut.register('CommandOrControl+Q'")) {
+      console.error('❌ CommandOrControl+Q global shortcut not registered in main.js');
+      return false;
+    }
+    
+    // Check that shortcuts are registered when browser view is created
+    if (!mainJs.includes('registerBrowserShortcuts()')) {
+      console.error('❌ registerBrowserShortcuts not called in createBrowserView');
+      return false;
+    }
+    
+    // Check that shortcuts are unregistered on cleanup
+    if (!mainJs.includes('globalShortcut.unregisterAll()')) {
+      console.error('❌ globalShortcut.unregisterAll not called on app quit');
+      return false;
+    }
+    
+    console.log('✅ Global shortcuts for BrowserView are properly implemented');
+    return true;
+  } catch (error) {
+    console.error('❌ Error testing global shortcuts:', error.message);
+    return false;
+  }
+}
+
 // Run all tests
 function runTests() {
   console.log('\n=== Castroix Electron Tests ===\n');
@@ -228,7 +291,8 @@ function runTests() {
     testConfigLoading,
     testServiceConfig,
     testHtmlStructure,
-    testKeyboardShortcuts
+    testKeyboardShortcuts,
+    testGlobalShortcuts
   ];
   
   let passed = 0;
