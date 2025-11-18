@@ -113,7 +113,6 @@ function createWindow() {
   mainWindow.on('closed', () => {
     if (currentBrowserView) {
       mainWindow.removeBrowserView(currentBrowserView);
-      currentBrowserView.destroy();
       currentBrowserView = null;
     }
     mainWindow = null;
@@ -125,7 +124,6 @@ function createBrowserView(url) {
   // Remove existing browser view if any
   if (currentBrowserView) {
     mainWindow.removeBrowserView(currentBrowserView);
-    currentBrowserView.destroy();
   }
 
   // Create new browser view
@@ -217,7 +215,6 @@ ipcMain.handle('launch-service', async (event, service) => {
 ipcMain.handle('close-browser', () => {
   if (currentBrowserView) {
     mainWindow.removeBrowserView(currentBrowserView);
-    currentBrowserView.destroy();
     currentBrowserView = null;
   }
   // Show the main interface again
