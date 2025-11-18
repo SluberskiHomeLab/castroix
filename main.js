@@ -134,6 +134,8 @@ function createBrowserView(url) {
   // Remove existing browser view if any
   if (currentBrowserView) {
     mainWindow.removeBrowserView(currentBrowserView);
+    // Unregister existing shortcuts before creating new browser view
+    unregisterBrowserShortcuts();
   }
 
   // Create new browser view
