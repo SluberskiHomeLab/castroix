@@ -2,46 +2,20 @@
 
 Media Hub for Multi-Media Consumption
 
-A cross-platform desktop application for launching and accessing popular media streaming services including Plex, Jellyfin, Netflix, and Disney+. Works on Windows, Linux, and MacOS.
-
-## 🆕 NEW: Electron Edition Available!
-
-Castroix now comes in two versions:
-
-### **Electron Edition** (Recommended - New!)
-- 🎨 **Apple TV-like UI** - Smooth animations, modern design, focus navigation
-- 🔐 **Automatic Credentials** - Secure storage with auto-login
-- 🌐 **Embedded Browser** - Full web browser wrapped in the application
-- ⚡ **Modern Interface** - Built with Electron for a premium experience
-
-👉 **[See Electron Edition Documentation](README-ELECTRON.md)**
-
-### **Python Edition** (Classic)
-- 🚀 **Lightweight** - Uses only Python standard library
-- 🎨 **Simple UI** - Color-coded service tiles with Tkinter
-- ⚙️ **Configurable** - Service URLs and commands
-
----
+A cross-platform desktop application for launching and accessing popular media streaming services including Plex, Jellyfin, Netflix, and Disney+. Built with Electron featuring an Apple TV-like interface. Works on Windows, Linux, and MacOS.
 
 ## Features
 
-### Common Features (Both Versions)
-- 🎬 Quick access to multiple media streaming services
-- 🖥️ Clean, modern GUI interface
-- ⚙️ Configurable service URLs and commands
-- 🎨 Color-coded service tiles
-- 🖼️ Icon support for services
-
-### Electron Edition Features
-- 🔐 Secure credential storage and auto-login
-- 🌐 Embedded browser for in-app streaming
-- ✨ Apple TV-like smooth animations
-- ⌨️ Full keyboard navigation with arrow keys
-- 🎯 Focus-based UI for TV/remote control use
+- 🎨 **Apple TV-like UI** - Smooth animations, modern design, focus navigation
+- 🔐 **Secure Credentials** - Encrypted storage with auto-login support
+- 🌐 **Embedded Browser** - Full web browser wrapped in the application
+- 🎬 **Multi-Service Support** - Quick access to multiple streaming services
+- ⌨️ **Keyboard Navigation** - Full arrow key navigation and shortcuts
+- ⚙️ **Configurable** - Customize service URLs, commands, and appearance
+- 🎨 **Color-Coded Tiles** - Beautiful service cards with custom colors
+- 🖼️ **Icon Support** - PNG icon display for each service
 
 ## Quick Start
-
-### Electron Edition (Recommended)
 
 ```bash
 # Clone and install
@@ -53,19 +27,6 @@ npm install
 npm start
 ```
 
-### Python Edition
-
-```bash
-# Clone and install
-git clone https://github.com/SluberskiHomeLab/castroix.git
-cd castroix
-pip install -r requirements.txt
-cp config.json.sample config.json
-
-# Run
-python castroix.py
-```
-
 ## Supported Services
 
 - **Plex** - Personal media server
@@ -75,100 +36,78 @@ python castroix.py
 
 ## Requirements
 
-### Electron Edition
-- Node.js 16.x or higher
-- npm (comes with Node.js)
+- **Node.js** 16.x or higher
+- **npm** (comes with Node.js)
 
-### Python Edition
-- Python 3.6 or higher
-- Tkinter (usually included with Python)
-- Pillow (PIL) library for image handling (optional but recommended for icon display)
+## Installation
 
-### Platform-Specific Setup
+### Prerequisites
 
-#### Windows
-Tkinter is typically included with Python installations from python.org. If needed, ensure you select "tcl/tk and IDLE" during Python installation.
-
-#### MacOS
-Tkinter is included with Python installations. If using Homebrew Python:
-```bash
-brew install python-tk
-```
-
-#### Linux
-On most Linux distributions, Tkinter is included by default. If needed, install it:
+Install Node.js from [nodejs.org](https://nodejs.org/) or use your package manager:
 
 **Ubuntu/Debian:**
 ```bash
-sudo apt-get install python3-tk
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
 ```
 
 **Fedora:**
 ```bash
-sudo dnf install python3-tkinter
+sudo dnf install nodejs
 ```
 
-**Arch Linux:**
+**MacOS (Homebrew):**
 ```bash
-sudo pacman -S tk
+brew install node
 ```
 
-## Installation
+**Windows:**
+Download and install from [nodejs.org](https://nodejs.org/)
 
-1. Clone the repository:
+### Install Dependencies
+
 ```bash
-git clone https://github.com/SluberskiHomeLab/castroix.git
 cd castroix
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-   
-   **Note:** If you skip this step, the application will still work but without icon images. Service buttons will display text labels instead.
-
-3. Copy the Sample Config:
-
-**Windows (PowerShell):**
-```powershell
-Copy-Item config.json.sample config.json
-```
-
-**Linux/MacOS:**
-```bash
-cp config.json.sample config.json
-```
-  
-4. Make the script executable (Linux/MacOS only):
-```bash
-chmod +x castroix.py
+npm install
 ```
 
 ## Usage
 
-### Running the Application
+### Starting Castroix
 
-**Windows:**
-```cmd
-python castroix.py
-```
-
-**Linux/MacOS:**
 ```bash
-python3 castroix.py
+npm start
 ```
 
-Or if you made it executable (Linux/MacOS):
-```bash
-./castroix.py
-```
+This will launch the Electron app in fullscreen mode.
+
+### Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `↑↓←→` | Navigate between services |
+| `Enter` | Launch selected service |
+| `Esc` | Close embedded browser / Exit fullscreen |
+| `Ctrl+Q` | Close embedded browser or last launched app |
+| `Ctrl+S` | Open credentials manager |
+
+### Managing Credentials
+
+1. Press `Ctrl+S` to open the credentials manager
+2. Select a service from the dropdown
+3. Enter your username/email and password
+4. Click "Save" to store credentials securely
+5. Next time you launch that service, credentials will be available for auto-fill
 
 ### Configuration
 
-The application uses a `config.json` file to store service configurations. This file is automatically created on first run with default settings.
+The application uses a `config.json` file to store service configurations. Copy the sample configuration:
 
-You can customize the configuration by editing `config.json`:
+```bash
+cp config.json.sample config.json
+```
+
+Edit `config.json` to customize services:
 
 ```json
 {
@@ -192,11 +131,11 @@ You can customize the configuration by editing `config.json`:
 ```
 
 **Configuration Options:**
-- `name`: Display name for the service (shown below the button)
-- `url`: Web URL to open (opened in default browser)
-- `command`: Shell command to execute (for native apps) - takes precedence over URL
-- `icon_color`: Hex color code for the button background
-- `icon_file`: Path to PNG icon file (placed in project root, e.g., "plex.png")
+- `name`: Display name for the service
+- `url`: Web URL to open (will open in embedded browser)
+- `command`: Shell command to execute (opens externally, takes precedence over URL)
+- `icon_color`: Hex color code for the service card background
+- `icon_file`: Path to icon image (PNG recommended, place in project root)
 
 **Examples:**
 
@@ -211,17 +150,6 @@ For a local Jellyfin server:
 }
 ```
 
-For a native Plex app (Linux):
-```json
-"plex": {
-  "name": "Plex",
-  "url": null,
-  "command": "flatpak run tv.plex.PlexDesktop",
-  "icon_color": "#e5a00d",
-  "icon_file": "plex.png"
-}
-```
-
 For Windows Store apps (Netflix):
 ```json
 "netflix": {
@@ -233,142 +161,20 @@ For Windows Store apps (Netflix):
 }
 ```
 
-For Windows Store apps (Disney+):
-```json
-"disneyplus": {
-  "name": "Disney+",
-  "url": null,
-  "command": "start shell:AppsFolder\\Disney.37853FC22B2CE_6rarf9sa4v8jt!App",
-  "icon_color": "#113ccf",
-  "icon_file": "disney+.png"
-}
-```
-
-For Windows Store apps (Plex):
-```json
-"plex": {
-  "name": "Plex",
-  "url": null,
-  "command": "start shell:AppsFolder\\CAF9E577.PlexforWindows_aam28m9va5cke!Plex",
-  "icon_color": "#e5a00d",
-  "icon_file": "plex.png"
-}
-```
-
-For traditional Windows executables:
-```json
-"vlc": {
-  "name": "VLC",
-  "url": null,
-  "command": "\"C:\\Program Files\\VideoLAN\\VLC\\vlc.exe\"",
-  "icon_color": "#ff8800",
-  "icon_file": "vlc.png"
-}
-```
-
 **Finding Windows Store App IDs:**
 
-To find the Application User Model ID (AUMID) for Windows Store apps:
-
-1. Open PowerShell and run:
+Open PowerShell and run:
 ```powershell
 Get-StartApps | Where-Object {$_.Name -like "*AppName*"}
 ```
 
-2. Look for the `AppID` column in the results. For example:
-```
-Name                                          AppID
-----                                          -----
-Netflix                                       4DF9E0F8.Netflix_mcm4njqhnhss8!Netflix.App
-Disney+                                       Disney.37853FC22B2CE_6rarf9sa4v8jt!App
-```
-
-3. Use the AppID in your config with the `start shell:AppsFolder\` prefix:
-```json
-"command": "start shell:AppsFolder\\AppID_Here"
-```
-
-**Note:** Remember to escape backslashes in JSON by using `\\` instead of `\`.
-
-### Creating a Desktop Launcher
-
-#### Windows
-Create a shortcut:
-1. Right-click on `castroix.py` and select "Create shortcut"
-2. Move the shortcut to your Desktop or Start Menu folder
-3. Optionally, right-click the shortcut, go to Properties, and set a custom icon
-
-#### Linux
-To add Castroix to your application menu, create a `.desktop` file:
-
-1. Create the file:
-```bash
-nano ~/.local/share/applications/castroix.desktop
-```
-
-2. Add the following content (adjust paths as needed):
-```ini
-[Desktop Entry]
-Name=Castroix
-Comment=Media Hub for Multi-Media Consumption
-Exec=/usr/bin/python3 /path/to/castroix/castroix.py
-Icon=video-display
-Terminal=false
-Type=Application
-Categories=AudioVideo;Video;Player;
-```
-
-3. Make it executable:
-```bash
-chmod +x ~/.local/share/applications/castroix.desktop
-```
-
-#### MacOS
-Create an app bundle or use Automator:
-1. Open Automator
-2. Create a new "Application"
-3. Add "Run Shell Script" action
-4. Enter: `/usr/bin/python3 /path/to/castroix/castroix.py`
-5. Save the application to your Applications folder
-
-## Screenshots
-
-The application features a clean, dark-themed interface with color-coded tiles for each streaming service.
-
-## Development
-
-### Project Structure
-
-```
-castroix/
-├── castroix_package/      # Main package directory
-│   ├── __init__.py       # Package initialization
-│   ├── __main__.py       # Module entry point
-│   ├── app.py            # Application logic
-│   ├── config.py         # Configuration management
-│   ├── services.py       # Service handling
-│   └── ui.py             # UI components
-├── castroix.py           # Entry point script
-├── config.json           # Configuration file
-├── requirements.txt      # Python dependencies
-├── setup.py              # Package installation
-├── pyproject.toml        # Modern package config
-├── test_castroix.py      # Test suite
-├── ARCHITECTURE.md       # Architecture documentation
-├── plex.png              # Service icon files
-├── jellyfin.png
-├── netflix.png
-├── disney+.png
-└── README.md             # This file
-```
-
-The application now uses a modular architecture for better maintainability and extensibility. See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed information about the project structure.
+Use the AppID in your config with the `start shell:AppsFolder\` prefix (escape backslashes with `\\` in JSON).
 
 ### Adding New Services
 
 To add a new streaming service:
 
-1. Create a PNG icon file (128x128 recommended) and place it in the project root (e.g., `hulu.png`)
+1. Create a PNG icon file (128x128 recommended) and place it in the project root
 2. Edit `config.json` and add a new entry under `services`:
 
 ```json
@@ -381,20 +187,181 @@ To add a new streaming service:
 }
 ```
 
-You can also add services programmatically:
+### Creating a Desktop Launcher
 
-```python
-from castroix_package import ConfigManager
+#### Linux
 
-config = ConfigManager()
-config.add_service('hulu', {
-    'name': 'Hulu',
-    'url': 'https://www.hulu.com',
-    'command': None,
-    'icon_color': '#1ce783',
-    'icon_file': 'hulu.png'
-})
+Create a `.desktop` file:
+
+```bash
+nano ~/.local/share/applications/castroix.desktop
 ```
+
+Add the following content (adjust paths as needed):
+```ini
+[Desktop Entry]
+Name=Castroix
+Comment=Media Hub for Multi-Media Consumption
+Exec=/path/to/castroix/castroix-electron.sh
+Icon=video-display
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;Player;
+StartupNotify=true
+```
+
+Make it executable:
+```bash
+chmod +x ~/.local/share/applications/castroix.desktop
+```
+
+#### Windows
+
+Create a shortcut to `castroix-electron.sh` or use the `npm start` command in a batch file:
+
+1. Create `castroix.bat` with:
+```batch
+@echo off
+cd /d "%~dp0"
+npm start
+```
+
+2. Right-click and create a shortcut
+3. Move the shortcut to your Desktop or Start Menu
+
+#### MacOS
+
+Create an app bundle or use Automator:
+
+1. Open Automator
+2. Create a new "Application"
+3. Add "Run Shell Script" action
+4. Enter: `cd /path/to/castroix && npm start`
+5. Save the application to your Applications folder
+
+## Architecture
+
+### Electron Processes
+
+**Main Process** (`main.js`)
+- Window management
+- Configuration loading
+- IPC communication
+- Credential storage (encrypted with electron-store)
+- Service launching
+
+**Preload Script** (`preload.js`)
+- Secure bridge between main and renderer processes
+- Exposes safe APIs to renderer
+
+**Renderer Process** (`renderer.js`)
+- UI interactions
+- Keyboard navigation
+- Service card management
+- Modal handling
+
+### Files
+
+```
+castroix/
+├── main.js              # Electron main process
+├── preload.js           # Preload script for IPC
+├── index.html           # Main UI HTML
+├── styles.css           # Apple TV-like styles
+├── renderer.js          # UI logic and interactions
+├── package.json         # Node.js dependencies
+├── config.json          # Service configuration
+├── test_electron.js     # Test suite
+├── castroix-electron.sh # Launch script
+└── *.png                # Service icons
+```
+
+## Building for Production
+
+### Package the Application
+
+To create distributable packages:
+
+```bash
+# Install electron-builder
+npm install --save-dev electron-builder
+
+# Build for current platform
+npm run build
+
+# Build for specific platforms
+npm run build:win     # Windows
+npm run build:mac     # macOS
+npm run build:linux   # Linux
+```
+
+Add these scripts to `package.json`:
+
+```json
+"scripts": {
+  "build": "electron-builder",
+  "build:win": "electron-builder --win",
+  "build:mac": "electron-builder --mac",
+  "build:linux": "electron-builder --linux"
+}
+```
+
+## Development
+
+### Running Tests
+
+```bash
+npm test
+```
+
+This runs the test suite in `test_electron.js` which validates:
+- Required files exist
+- Configuration is valid
+- Service configurations are correct
+- HTML structure is proper
+- Keyboard shortcuts are implemented
+
+### Customizing the UI
+
+- **Colors**: Edit `styles.css` to change color schemes
+- **Layout**: Modify grid settings in `styles.css`
+- **Animations**: Adjust CSS transitions and keyframes
+- **Fonts**: Change font-family in `styles.css`
+
+## Troubleshooting
+
+### Issue: Services not launching
+- Check that URLs are valid in `config.json`
+- Verify network connectivity
+- Check console for error messages (`Ctrl+Shift+I` to open dev tools)
+
+### Issue: Credentials not saving
+- Ensure app has write permissions in its directory
+- Check electron-store configuration
+- Verify encryption key is set
+
+### Issue: Icons not showing
+- Confirm icon files exist in project root
+- Check file paths in `config.json`
+- Ensure icons are in PNG format
+
+### Issue: Black screen on startup
+- Try deleting `config.json` and copying from `config.json.sample`
+- Check console for JavaScript errors
+- Verify all files are present
+
+### Issue: Cannot install dependencies
+- Ensure Node.js and npm are properly installed
+- Try deleting `node_modules` and `package-lock.json`, then run `npm install` again
+- Check npm logs for specific errors
+
+## Security Considerations
+
+- Credentials are encrypted at rest using electron-store
+- No credentials sent over network
+- Context isolation enabled
+- Node integration disabled in renderer process
+- All IPC communication goes through secure preload bridge
 
 ## License
 

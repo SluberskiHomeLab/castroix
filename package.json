@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron . --no-sandbox",
-    "test": "python test_castroix.py && node test_electron.js"
+    "test": "node test_electron.js"
   },
   "keywords": [
     "media",
