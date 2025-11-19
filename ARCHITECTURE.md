@@ -42,9 +42,11 @@ castroix/
 ├── renderer.js          # UI logic
 ├── package.json         # Node.js config
 ├── config.json          # Service config
-├── test_electron.js     # Test suite
 ├── castroix-electron.sh # Launch script
-└── *.png                # Service icons
+├── tests/               # Test files
+│   └── test_electron.js # Test suite
+└── images/              # Service icon images
+    └── *.png            # PNG icon files
 ```
 
 ## Key Components
@@ -168,7 +170,7 @@ Configuration is stored in JSON with the following structure:
       "url": "https://...",
       "command": "command to run",
       "icon_color": "#hexcolor",
-      "icon_file": "icon.png"
+      "icon_file": "images/icon.png"
     }
   }
 }
@@ -312,7 +314,7 @@ When a BrowserView is active and has focus, global shortcuts registered with `gl
 
 ## Testing
 
-### Test Suite (test_electron.js)
+### Test Suite (tests/test_electron.js)
 
 **Test Categories:**
 1. File structure validation

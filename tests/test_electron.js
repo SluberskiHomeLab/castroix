@@ -10,8 +10,8 @@ const path = require('path');
 function testConfigLoading() {
   console.log('Testing configuration loading...');
   
-  const configPath = path.join(__dirname, 'config.json');
-  const sampleConfigPath = path.join(__dirname, 'config.json.sample');
+  const configPath = path.join(__dirname, '..', 'config.json');
+  const sampleConfigPath = path.join(__dirname, '..', 'config.json.sample');
   
   if (!fs.existsSync(configPath) && !fs.existsSync(sampleConfigPath)) {
     console.error('❌ No config.json or config.json.sample found');
@@ -51,7 +51,7 @@ function testRequiredFiles() {
   let allExist = true;
   
   for (const file of requiredFiles) {
-    const filePath = path.join(__dirname, file);
+    const filePath = path.join(__dirname, '..', file);
     if (!fs.existsSync(filePath)) {
       console.error(`❌ Missing required file: ${file}`);
       allExist = false;
@@ -70,7 +70,7 @@ function testPackageJson() {
   console.log('Testing package.json...');
   
   try {
-    const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf-8'));
+    const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8'));
     
     if (!packageJson.main) {
       console.error('❌ package.json missing main entry');
@@ -100,7 +100,7 @@ function testHtmlStructure() {
   console.log('Testing HTML structure...');
   
   try {
-    const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf-8');
+    const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf-8');
     
     const requiredElements = [
       'services-grid',
@@ -132,8 +132,8 @@ function testServiceConfig() {
   console.log('Testing service configurations...');
   
   try {
-    const configPath = path.join(__dirname, 'config.json');
-    const sampleConfigPath = path.join(__dirname, 'config.json.sample');
+    const configPath = path.join(__dirname, '..', 'config.json');
+    const sampleConfigPath = path.join(__dirname, '..', 'config.json.sample');
     const configFile = fs.existsSync(configPath) ? configPath : sampleConfigPath;
     
     const config = JSON.parse(fs.readFileSync(configFile, 'utf-8'));
@@ -178,7 +178,7 @@ function testKeyboardShortcuts() {
   console.log('Testing keyboard shortcut implementation...');
   
   try {
-    const rendererJs = fs.readFileSync(path.join(__dirname, 'renderer.js'), 'utf-8');
+    const rendererJs = fs.readFileSync(path.join(__dirname, '..', 'renderer.js'), 'utf-8');
     
     // Check that Ctrl+Q handler exists with case-insensitive comparison
     if (!rendererJs.includes("e.ctrlKey && e.key.toLowerCase() === 'q'")) {
@@ -223,7 +223,7 @@ function testGlobalShortcuts() {
   console.log('Testing global keyboard shortcuts for BrowserView...');
   
   try {
-    const mainJs = fs.readFileSync(path.join(__dirname, 'main.js'), 'utf-8');
+    const mainJs = fs.readFileSync(path.join(__dirname, '..', 'main.js'), 'utf-8');
     
     // Check that globalShortcut is imported
     if (!mainJs.includes('globalShortcut')) {

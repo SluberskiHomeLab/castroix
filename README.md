@@ -171,14 +171,14 @@ Edit `config.json` to customize services:
       "url": "https://app.plex.tv",
       "command": null,
       "icon_color": "#e5a00d",
-      "icon_file": "plex.png"
+      "icon_file": "images/plex.png"
     },
     "jellyfin": {
       "name": "Jellyfin",
       "url": "http://localhost:8096",
       "command": null,
       "icon_color": "#00a4dc",
-      "icon_file": "jellyfin.png"
+      "icon_file": "images/jellyfin.png"
     }
   }
 }
@@ -200,7 +200,7 @@ For a local Jellyfin server:
   "url": "http://192.168.1.100:8096",
   "command": null,
   "icon_color": "#00a4dc",
-  "icon_file": "jellyfin.png"
+  "icon_file": "images/jellyfin.png"
 }
 ```
 
@@ -211,7 +211,7 @@ For Windows Store apps (Netflix):
   "url": null,
   "command": "start shell:AppsFolder\\4DF9E0F8.Netflix_mcm4njqhnhss8!Netflix.App",
   "icon_color": "#e50914",
-  "icon_file": "netflix.png"
+  "icon_file": "images/netflix.png"
 }
 ```
 
@@ -228,7 +228,7 @@ Use the AppID in your config with the `start shell:AppsFolder\` prefix (escape b
 
 To add a new streaming service:
 
-1. Create a PNG icon file (128x128 recommended) and place it in the project root
+1. Create a PNG icon file (128x128 recommended) and place it in the `images` folder
 2. Edit `config.json` and add a new entry under `services`:
 
 ```json
@@ -237,7 +237,7 @@ To add a new streaming service:
   "url": "https://www.hulu.com",
   "command": null,
   "icon_color": "#1ce783",
-  "icon_file": "hulu.png"
+  "icon_file": "images/hulu.png"
 }
 ```
 
@@ -325,9 +325,11 @@ castroix/
 ├── renderer.js          # UI logic and interactions
 ├── package.json         # Node.js dependencies
 ├── config.json          # Service configuration
-├── test_electron.js     # Test suite
 ├── castroix-electron.sh # Launch script
-└── *.png                # Service icons
+├── tests/               # Test files
+│   └── test_electron.js # Test suite
+└── images/              # Service icon images
+    └── *.png            # PNG icon files
 ```
 
 ## Building for Production
@@ -368,7 +370,7 @@ Add these scripts to `package.json`:
 npm test
 ```
 
-This runs the test suite in `test_electron.js` which validates:
+This runs the test suite in `tests/test_electron.js` which validates:
 - Required files exist
 - Configuration is valid
 - Service configurations are correct
@@ -395,7 +397,7 @@ This runs the test suite in `test_electron.js` which validates:
 - Verify encryption key is set
 
 ### Issue: Icons not showing
-- Confirm icon files exist in project root
+- Confirm icon files exist in the `images` folder
 - Check file paths in `config.json`
 - Ensure icons are in PNG format
 
