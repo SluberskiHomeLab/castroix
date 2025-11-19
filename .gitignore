@@ -27,3 +27,6 @@ Thumbs.db
 
 # Configuration (user-specific)
 config.json
+
+# Test files
+test_ui.html
