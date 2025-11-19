@@ -63,23 +63,19 @@ function createServiceCard(key, service, index) {
   card.className = 'service-card';
   card.dataset.index = index;
   card.dataset.key = key;
-  card.style.background = service.icon_color || '#4a90e2';
+  
+  // Set background image if available, otherwise use fallback color
+  const iconPath = service.icon_file;
+  if (iconPath) {
+    card.style.backgroundImage = `url('${iconPath}')`;
+    // Set fallback background color
+    card.style.backgroundColor = service.icon_color || '#4a90e2';
+  } else {
+    card.style.background = service.icon_color || '#4a90e2';
+  }
 
   const content = document.createElement('div');
   content.className = 'service-content';
-
-  // Try to load icon
-  const iconPath = service.icon_file;
-  if (iconPath) {
-    const icon = document.createElement('img');
-    icon.className = 'service-icon';
-    icon.src = iconPath;
-    icon.onerror = () => {
-      // If icon fails to load, hide it
-      icon.style.display = 'none';
-    };
-    content.appendChild(icon);
-  }
 
   const name = document.createElement('div');
   name.className = 'service-name';
