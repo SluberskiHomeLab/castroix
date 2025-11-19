@@ -17,6 +17,52 @@ A cross-platform desktop application for launching and accessing popular media s
 
 ## Quick Start
 
+### Automated Setup (Recommended)
+
+The easiest way to get started is using the automated setup script:
+
+**Linux/macOS:**
+```bash
+# Clone the repository
+git clone https://github.com/SluberskiHomeLab/castroix.git
+cd castroix
+
+# Run the setup script
+./setup.sh
+```
+
+**Windows (PowerShell - Recommended):**
+```powershell
+# Clone the repository
+git clone https://github.com/SluberskiHomeLab/castroix.git
+cd castroix
+
+# Run the setup script
+.\setup.ps1
+```
+
+**Windows (Command Prompt):**
+```cmd
+REM Clone the repository
+git clone https://github.com/SluberskiHomeLab/castroix.git
+cd castroix
+
+REM Run the setup script
+setup.bat
+```
+
+The setup script will:
+- Detect your operating system
+- Check if Node.js and npm are installed
+- Install Node.js and npm if needed (or provide instructions)
+- Install all dependencies
+- Create config.json from the sample
+- Ask if you want to launch the app
+
+### Manual Setup
+
+If you prefer to set up manually:
+
 ```bash
 # Clone and install
 git clone https://github.com/SluberskiHomeLab/castroix.git
@@ -41,7 +87,15 @@ npm start
 
 ## Installation
 
-### Prerequisites
+### Automated Installation (Recommended)
+
+The easiest way to install Castroix is using the automated setup scripts. See the [Quick Start](#quick-start) section above for instructions.
+
+### Manual Installation
+
+If you prefer manual installation or the automated script doesn't work for your system:
+
+#### Prerequisites
 
 Install Node.js from [nodejs.org](https://nodejs.org/) or use your package manager:
 
@@ -64,7 +118,7 @@ brew install node
 **Windows:**
 Download and install from [nodejs.org](https://nodejs.org/)
 
-### Install Dependencies
+#### Install Dependencies
 
 ```bash
 cd castroix
