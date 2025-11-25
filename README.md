@@ -1,3 +1,7 @@
+#Castroix has now been moved to forgejo.  This repository is archived on Github.  Any future development will be done at the below link  
+
+Forgejo Repo: https://git.sluberskihomelab.com/Public/castroix
+
 # Castroix
 
 Media Hub for Multi-Media Consumption
